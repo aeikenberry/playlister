@@ -4,8 +4,8 @@ export default class Spotify {
     constructor() {
         this.apiBase = 'https://api.spotify.com';
         this.userId = '1264695185';
-        this.client_id = '8eefcfde253e44b79a9f778daf9513d1';
-        this.client_secret = 'e53ffdc883374edda08abf95dd8b8e0b';
+        this.client_id = '...';
+        this.client_secret = '...';
         this.redirect_uri = 'http://localhost:8888/callback';
         this.token = null;
     }
