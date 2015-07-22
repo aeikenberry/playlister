@@ -12,7 +12,9 @@
   "dependencies": {
     "feed-read": "0.0.1",
     "gulp": "^3.9.0",
-    "request": "~2.34.0"
+    "request": "~2.34.0",
+    "spotify-web-api-node": "^2.1.0",
+    "async": "^1.4.0"
   },
   "devDependencies": {
     "gulp-babel": "^5.1.0"
