@@ -1,6 +1,7 @@
 import spotifyApi from 'spotify-web-api-node';
 
 export default class Spotify {
+
   constructor() {
     this.myUserId = '1264695185';
     this.client_id = '8eefcfde253e44b79a9f778daf9513d1';
