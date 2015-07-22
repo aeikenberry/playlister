@@ -4,7 +4,7 @@ import Spotify from './spotify';
 
 let pitchfork = new Pitchfork();
 let spotify = new Spotify();
-
+console.log('hiiii');
 async.waterfall([
   (done) => {
     pitchfork.bestNewAlbums((titles) => {
