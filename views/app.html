@@ -2,16 +2,26 @@
 
 {% block content %}
 <div class="row">
-    <div class="js-user-app">Here comes a sweet app!</div>
+    <div id="js-user-app">Loading...</div>
 </div>
 {% endblock %}
 
 
 {% block extra_js %}
-<script type="text/javascript" src="js/playlister.js"></script>
+<script type="text/javascript" src="/js/playlister/vendor.js"></script>
+<script type="text/javascript" src="/js/playlister/Playlister.js"></script>
 <script type="text/javascript">
     $(function() {
+        // get the token and shit and pass it into this
 
+        var $el = $('#js-user-app')[0];
+        new Playlister({
+            el: $el,
+            urls: {
+                uploadList: '/ajax/v1/uploads',
+                photoList: '/ajax/v1/photos'
+            }
+        }).start();
     });
 </script>
 {% endblock %}

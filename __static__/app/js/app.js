@@ -65,6 +65,7 @@ webpackJsonp([0],{
 	    _classCallCheck(this, Playlister);
 
 	    _marty2['default'].HttpStateSource.removeHook('parseJSON');
+	    console.log(optoins);
 	    _get(Object.getPrototypeOf(Playlister.prototype), 'constructor', this).call(this, options);
 
 	    this.options = options;
@@ -283,7 +284,7 @@ webpackJsonp([0],{
 	        _react2['default'].createElement(
 	          'div',
 	          { className: "col-xs-6" },
-	          'Real Content'
+	          'Hello'
 	        )
 	      );
 	    }
