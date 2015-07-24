@@ -30,5 +30,5 @@
     "babel-loader": "^5.3.2",
     "gulp-util": "^3.0.6",
     "jsx-loader": "^0.13.2"
-  },
+  }
 }
