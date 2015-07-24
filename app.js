@@ -2,17 +2,22 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
+var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var swig = require('swig');
+var sass = require('node-sass-middleware');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var index = require('./app/routes/index');
+var appRoute = require('./app/routes/app');
+var database = require('./app/config/database');
 
 var app = express();
 
 // view engine setup
+app.engine('html', swig.renderFile);
+app.set('view engine', 'html');
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -20,16 +25,20 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(require('node-sass-middleware')({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
+app.use(sass({
+  src: path.join(__dirname, 'public/sass'),
+  dest: path.join(__dirname, 'public/css'),
   indentedSyntax: true,
   sourceMap: true
 }));
-app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+// Static
+app.use(express.static(path.join(__dirname, '/public')));
+app.use('/vendor',  express.static(__dirname + '/bower_components'));
+
+// Routing
+app.use('/', index);
+app.use('/app', appRoute);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
