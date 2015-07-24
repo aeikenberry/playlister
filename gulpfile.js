@@ -1,5 +1,9 @@
 var gulp = require("gulp");
+var gutil = require("gulp-util");
 var babel = require("gulp-babel");
+var webpack = require("webpack");
+
+var PRODUCTION = process.env.NODE_ENV === 'production';
 
 gulp.task("build", function () {
   return gulp.src('src/*.js')
@@ -7,8 +11,84 @@ gulp.task("build", function () {
     .pipe(gulp.dest("dist"));
 });
 
-gulp.task("watch", function() {
-  gulp.watch('src/*.js', ['build']);
+gulp.task('app:build', function(callback) {
+  var config = {
+    entry: {
+      'Playlister': __dirname + '/public/js/src/entry.js',
+      'vendor': [
+        'lodash',
+        'marty',
+        'react/addons'
+      ],
+    },
+    module: {
+      loaders: [
+        {
+            test: /\.jsx|\.js$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }
+      ]
+    },
+    plugins: [
+      new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+      new webpack.optimize.DedupePlugin()
+    ],
+    resolve: {
+      modulesDirectories: ['node_modules'],
+      extensions: ['', '.jsx', '.js', '.json']
+    },
+    output: {
+      path: __dirname + '/public/js/playlister',
+      filename: '[name].js',
+    }
+  };
+
+  if (PRODUCTION) {
+    config.bail = true;
+    config.debug = false;
+    config.profile = false;
+    config.output.pathInfo = false;
+    config.devtool = '#source-map';
+    config.plugins = config.plugins.concat([
+      new webpack.optimize.UglifyJsPlugin({
+        mangle: {
+          except: ['require', 'export', '$super']
+        },
+        compress: {
+          warnings: false,
+          sequences: true,
+          dead_code: true,
+          conditionals: true,
+          booleans: true,
+          unused: true,
+          if_return: true,
+          join_vars: true,
+          drop_console: true
+        }
+      }),
+      new CompressionPlugin({
+        asset: "{file}.gz",
+        algorithm: "gzip",
+        regExp: /\.js$|\.html$/,
+        threshold: 10240,
+        minRatio: 0.8
+      })
+    ]);
+  };
+
+  webpack(config, function(error, stats) {
+    if (error) {
+      throw new gutil.PluginError('webpack', error);
+    }
+    gutil.log(stats.toString({colors: true}));
+    callback();
+  })
 });
 
-gulp.task('default', ['build', 'watch']);
+gulp.task("watch", function() {
+  gulp.watch('src/*.js', ['build']);
+  gulp.watch('public/js/src/apps/**/*.js', ['app:build']);
+});
+
+gulp.task('default', ['build', 'app:build', 'watch']);
