@@ -30,31 +30,35 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(2);
+	var _marty = __webpack_require__(3);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
-	var _react = __webpack_require__(211);
+	var _react = __webpack_require__(212);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ActionCreators = __webpack_require__(366);
+	var _ActionCreators = __webpack_require__(368);
 
 	var _ActionCreators2 = _interopRequireDefault(_ActionCreators);
 
-	var _API = __webpack_require__(368);
+	var _AppAPI = __webpack_require__(369);
 
-	var _API2 = _interopRequireDefault(_API);
+	var _AppAPI2 = _interopRequireDefault(_AppAPI);
 
-	var _componentsUserInfo = __webpack_require__(369);
+	var _SpotifyAPI = __webpack_require__(2);
+
+	var _SpotifyAPI2 = _interopRequireDefault(_SpotifyAPI);
+
+	var _componentsUserInfo = __webpack_require__(370);
 
 	var _componentsUserInfo2 = _interopRequireDefault(_componentsUserInfo);
 
-	var _Queries = __webpack_require__(370);
+	var _Queries = __webpack_require__(371);
 
 	var _Queries2 = _interopRequireDefault(_Queries);
 
-	var _Store = __webpack_require__(371);
+	var _Store = __webpack_require__(372);
 
 	var _Store2 = _interopRequireDefault(_Store);
 
@@ -70,10 +74,11 @@ webpackJsonp([0],{
 	    this.options = options;
 
 	    this.register('ActionCreators', _ActionCreators2['default']);
-	    this.register('API', _API2['default']);
-	    this.register('UserInfo', _componentsUserInfo2['default']);
+	    this.register('AppAPI', _AppAPI2['default']);
+	    this.register('SpotifyAPI', _SpotifyAPI2['default']);
 	    this.register('Queries', _Queries2['default']);
 	    this.register('Store', _Store2['default']);
+	    this.register('UserInfo', _componentsUserInfo2['default']);
 	  }
 
 	  _createClass(Playlister, [{
@@ -95,7 +100,87 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 366:
+/***/ 2:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _marty = __webpack_require__(3);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	var _Constants = __webpack_require__(367);
+
+	var _Constants2 = _interopRequireDefault(_Constants);
+
+	var API = (function (_Marty$HttpStateSource) {
+	  _inherits(API, _Marty$HttpStateSource);
+
+	  function API() {
+	    _classCallCheck(this, API);
+
+	    _get(Object.getPrototypeOf(API.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(API, [{
+	    key: 'getMe',
+	    value: function getMe(token) {
+	      return this.get({
+	        url: 'https://api.spotify.com/v1/me',
+	        headers: {
+	          'Authorization': 'Bearer ' + token
+	        }
+	      }).then(function (res) {
+	        if (res.ok) {
+	          return res.json();
+	        }
+	      });
+	    }
+	  }]);
+
+	  return API;
+	})(_marty2['default'].HttpStateSource);
+
+	exports['default'] = API;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 367:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _marty = __webpack_require__(3);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	exports['default'] = _marty2['default'].createConstants(['RECEIVE_MY_PROFILE']);
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 368:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -112,7 +197,7 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(2);
+	var _marty = __webpack_require__(3);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
@@ -145,27 +230,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 367:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _marty = __webpack_require__(2);
-
-	var _marty2 = _interopRequireDefault(_marty);
-
-	exports['default'] = _marty2['default'].createConstants(['RECEIVE_PHOTOS', 'SUBSCRIBE_PHOTOS', 'UNSUBSCRIBE_PHOTOS']);
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 368:
+/***/ 369:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -184,7 +249,7 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(2);
+	var _marty = __webpack_require__(3);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
@@ -220,7 +285,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 369:
+/***/ 370:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -239,11 +304,11 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(2);
+	var _marty = __webpack_require__(3);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
-	var _react = __webpack_require__(211);
+	var _react = __webpack_require__(212);
 
 	// import PhotoThumbnail from './PhotoThumbnail';
 
@@ -256,36 +321,41 @@ webpackJsonp([0],{
 	    _classCallCheck(this, UserInfo);
 
 	    _get(Object.getPrototypeOf(UserInfo.prototype), 'constructor', this).call(this, props, context);
+
+	    this.app.SpotifyAPI.getMe(this.app.options.token);
 	  }
 
 	  _createClass(UserInfo, [{
 	    key: 'render',
 	    value: function render() {
-	      // if (this.props.photos.length) {
-	      //   return (
-	      //     <div className="row">
-	      //       {this.props.photos.map(photo => {
-	      //         return <PhotoThumbnail key={photo.get('id')}
-	      //                                className="col-xs-6 col-md-3"
-	      //                                app={this.app}
-	      //                                photo={photo} />
-	      //       })}
-	      //     </div>
-	      //   );
-	      // } else {
-	      //   return (
-	      //     <div className="empty-thumbnail-panel">No Photos.</div>
-	      //   );
-	      // }
-	      return _react2['default'].createElement(
-	        'div',
-	        { className: "row" },
-	        _react2['default'].createElement(
+	      if (this.props.me) {
+	        return _react2['default'].createElement(
 	          'div',
-	          { className: "col-xs-6" },
-	          'Real Content'
-	        )
-	      );
+	          { className: "row" },
+	          _react2['default'].createElement(
+	            'div',
+	            { className: "col-xs-6" },
+	            _react2['default'].createElement('img', { src: this.props.me.images[0].url }),
+	            _react2['default'].createElement(
+	              'p',
+	              null,
+	              this.props.me.display_name
+	            ),
+	            _react2['default'].createElement(
+	              'p',
+	              null,
+	              'Id: ',
+	              this.props.me.id
+	            )
+	          )
+	        );
+	      } else {
+	        return _react2['default'].createElement(
+	          'div',
+	          { className: "empty-thumbnail-panel" },
+	          'Whaah Happah'
+	        );
+	      }
 	    }
 	  }]);
 
@@ -293,78 +363,30 @@ webpackJsonp([0],{
 	})(_react2['default'].Component);
 
 	exports['default'] = _marty2['default'].createContainer(UserInfo, {
-	  listenTo: 'Store'
+	  listenTo: 'Store',
 
-	});
-	module.exports = exports['default'];
-	// fetch: {
-	//   photos() {
-	//     return this.app.PhotoStore.getPhotos()
-	//   }
-	// },
+	  fetch: {
+	    me: function me() {
+	      return this.app.Store.getMe();
+	    }
+	  },
 
-	// pending() {
-	//   return <div className="empty-thumbnail-panel">Loading...</div>;
-	// },
-
-	// componentWillMount() {
-	//   this.app.subscriber.subscribe();
-	// },
-
-	// componentWillUnmount() {
-	//   this.app.subscriber.unsubscribe();
-	// }
-
-/***/ },
-
-/***/ 370:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _marty = __webpack_require__(2);
-
-	var _marty2 = _interopRequireDefault(_marty);
-
-	var _Constants = __webpack_require__(367);
-
-	// import PhotoUtils from '../utils/PhotoUtils';
-
-	var _Constants2 = _interopRequireDefault(_Constants);
-
-	var Queries = (function (_Marty$Queries) {
-	  _inherits(Queries, _Marty$Queries);
-
-	  function Queries(options) {
-	    _classCallCheck(this, Queries);
-
-	    _get(Object.getPrototypeOf(Queries.prototype), 'constructor', this).call(this, options);
-
-	    // this.getPhotos = this.getPhotos.bind(this);
+	  pending: function pending() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      'Loading Your Profile...'
+	    );
 	  }
 
-	  // getPhotos() {
-	  //   return this.app.PhotoAPI.getPhotos().then(res => {
-	  //     let photos = res.map(photo => { return PhotoUtils.createPhoto(photo) });
-	  //     this.dispatch(PhotoConstants.RECEIVE_PHOTOS, photos);
-	  //   });
-	  // }
-	  return Queries;
-	})(_marty2['default'].Queries);
+	  // componentWillMount() {
+	  //   this.app.subscriber.subscribe();
+	  // },
 
-	exports['default'] = Queries;
+	  // componentWillUnmount() {
+	  //   this.app.subscriber.unsubscribe();
+	  // }
+	});
 	module.exports = exports['default'];
 
 /***/ },
@@ -378,6 +400,8 @@ webpackJsonp([0],{
 	  value: true
 	});
 
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
 	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -386,11 +410,68 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _immutable = __webpack_require__(372);
+	var _marty = __webpack_require__(3);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	var _Constants = __webpack_require__(367);
+
+	var _Constants2 = _interopRequireDefault(_Constants);
+
+	var Queries = (function (_Marty$Queries) {
+	  _inherits(Queries, _Marty$Queries);
+
+	  function Queries(options) {
+	    _classCallCheck(this, Queries);
+
+	    _get(Object.getPrototypeOf(Queries.prototype), 'constructor', this).call(this, options);
+
+	    this.getMe = this.getMe.bind(this);
+	  }
+
+	  _createClass(Queries, [{
+	    key: 'getMe',
+	    value: function getMe() {
+	      var _this = this;
+
+	      return this.app.SpotifyAPI.getMe(this.app.options.token).then(function (res) {
+	        _this.dispatch(_Constants2['default'].RECEIVE_MY_PROFILE, res);
+	      });
+	    }
+	  }]);
+
+	  return Queries;
+	})(_marty2['default'].Queries);
+
+	exports['default'] = Queries;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 372:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _immutable = __webpack_require__(373);
 
 	var _immutable2 = _interopRequireDefault(_immutable);
 
-	var _marty = __webpack_require__(2);
+	var _marty = __webpack_require__(3);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
@@ -407,31 +488,35 @@ webpackJsonp([0],{
 	    _get(Object.getPrototypeOf(Store.prototype), 'constructor', this).call(this, options);
 
 	    this.state = _immutable2['default'].Map({
-	      photos: undefined
+	      me: undefined
 	    });
 
-	    // this.handlers = {
-	    //   receivePhotos: PhotoConstants.RECEIVE_PHOTOS
-	    // };
+	    this.handlers = {
+	      receiveMyProfile: _Constants2['default'].RECEIVE_MY_PROFILE
+	    };
 	  }
 
-	  // getPhotos() {
-	  //   return this.fetch({
-	  //     id: 'photos',
+	  _createClass(Store, [{
+	    key: 'getMe',
+	    value: function getMe() {
+	      return this.fetch({
+	        id: 'me',
 
-	  //     locally() {
-	  //       return this.state.get('photos');
-	  //     },
+	        locally: function locally() {
+	          return this.state.get('me');
+	        },
 
-	  //     remotely() {
-	  //       return this.app.PhotoQueries.getPhotos();
-	  //     }
-	  //   });
-	  // }
-
-	  // receivePhotos(photos) {
-	  //   this.state = this.state.set('photos', photos);
-	  // }
+	        remotely: function remotely() {
+	          return this.app.Queries.getMe();
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'receiveMyProfile',
+	    value: function receiveMyProfile(userData) {
+	      this.state = this.state.set('me', userData);
+	    }
+	  }]);
 
 	  return Store;
 	})(_marty2['default'].Store);
@@ -441,7 +526,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 372:
+/***/ 373:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**

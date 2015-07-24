@@ -1,18 +1,16 @@
 import Marty from 'marty';
 import Constants from './Constants';
-// import PhotoUtils from '../utils/PhotoUtils';
 
 export default class Queries extends Marty.Queries {
   constructor(options) {
     super(options)
 
-    // this.getPhotos = this.getPhotos.bind(this);
+    this.getMe = this.getMe.bind(this);
   }
 
-  // getPhotos() {
-  //   return this.app.PhotoAPI.getPhotos().then(res => {
-  //     let photos = res.map(photo => { return PhotoUtils.createPhoto(photo) });
-  //     this.dispatch(PhotoConstants.RECEIVE_PHOTOS, photos);
-  //   });
-  // }
+  getMe() {
+    return this.app.SpotifyAPI.getMe(this.app.options.token).then(res => {
+      this.dispatch(Constants.RECEIVE_MY_PROFILE, res);
+    });
+  }
 }

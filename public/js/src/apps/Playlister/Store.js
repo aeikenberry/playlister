@@ -7,30 +7,30 @@ export default class Store extends Marty.Store {
     super(options)
 
     this.state = Immutable.Map({
-      photos: undefined
+      me: undefined
     });
 
-    // this.handlers = {
-    //   receivePhotos: PhotoConstants.RECEIVE_PHOTOS
-    // };
+    this.handlers = {
+      receiveMyProfile: Constants.RECEIVE_MY_PROFILE
+    };
   }
 
-  // getPhotos() {
-  //   return this.fetch({
-  //     id: 'photos',
+  getMe() {
+    return this.fetch({
+      id: 'me',
 
-  //     locally() {
-  //       return this.state.get('photos');
-  //     },
+      locally() {
+        return this.state.get('me');
+      },
 
-  //     remotely() {
-  //       return this.app.PhotoQueries.getPhotos();
-  //     }
-  //   });
-  // }
+      remotely() {
+        return this.app.Queries.getMe();
+      }
+    });
+  }
 
-  // receivePhotos(photos) {
-  //   this.state = this.state.set('photos', photos);
-  // }
+  receiveMyProfile(userData) {
+    this.state = this.state.set('me', userData);
+  }
 
 }

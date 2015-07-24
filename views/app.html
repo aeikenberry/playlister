@@ -13,10 +13,21 @@
 <script type="text/javascript">
     $(function() {
         // get the token and shit and pass it into this
+        var params = getHashParams();
 
-        var $el = $('#js-user-app')[0];
+        var access_token = params.access_token,
+            state = params.state;
+
+        var $el = $('#js-user-app');
+
+        if (!access_token) {
+            $el.html('There was a problem retreiving your access token');
+            return;
+        }
+
         new Playlister({
-            el: $el,
+            el: $el.get(0),
+            token: access_token,
             urls: {
                 uploadList: '/ajax/v1/uploads',
                 photoList: '/ajax/v1/photos'
