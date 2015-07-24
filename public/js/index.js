@@ -1,5 +1,5 @@
 var client_id = '8eefcfde253e44b79a9f778daf9513d1';
-var redirect_uri = 'http://localhost:8000/app/';
+var redirect_uri = window.REDIRECT_URI;
 var stateKey = 'spotify_auth_state';
 
 /**
