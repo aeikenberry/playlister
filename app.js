@@ -27,12 +27,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(sass({
-  src: path.join(__dirname, 'public/sass'),
-  dest: path.join(__dirname, 'public/css'),
-  indentedSyntax: true,
-  sourceMap: true
-}));
 
 // Static
 app.use(express.static(path.join(__dirname, '/public')));
