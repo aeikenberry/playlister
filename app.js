@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
-var sass = require('node-sass-middleware');
 
 var index = require('./app/routes/index');
 var appRoute = require('./app/routes/app');
