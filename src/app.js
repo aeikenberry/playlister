@@ -17,23 +17,14 @@ async.waterfall([
       done(null, titles, api);
     });
   },
+
   (titles, api, done) => {
-    api.createPlaylist(spotify.myUserId, 'Pitchfork Best New Albums', { 'public': false})
-      .then((data) => {
-        console.log('created', data.body);
-        done(null, titles, api, data.body);
-      }, (err) => {
-        console.log('error making playlist');
-        done(err);
-      });
-  },
-  (titles, api, playlist, done) => {
     async.each(titles, (title, cb) => {
       api.searchTracks(`album:${title.album}`)
         .then((data) => {
           let tracks = [];
           data.body.tracks.items.forEach((track) => {
-            tracks.push(`spotify:track:${track.id}`);
+            console.log(track);
           });
           return api.addTracksToPlaylist(spotify.myUserId, playlist, tracks);
         })

@@ -13,4 +13,16 @@ export default class Queries extends Marty.Queries {
       this.dispatch(Constants.RECEIVE_MY_PROFILE, res);
     });
   }
+
+  getMyPlaylists(spotifyUserId) {
+    return this.app.SpotifyAPI.getMyPlaylists(spotifyUserId).then(res => {
+      this.dispatch(Constants.RECEIVE_PLAYLISTS, res);
+    });
+  }
+
+  getFeeds() {
+    return this.app.AppAPI.getFeeds().then(res => {
+      this.dispatch(Constants.RECEIVE_FEEDS, res);
+    });
+  }
 }

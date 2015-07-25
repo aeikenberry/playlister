@@ -1,16 +1,16 @@
 import Marty from 'marty';
 
 export default class API extends Marty.HttpStateSource {
-  getPhotos() {
+  getFeeds() {
     return this.get({
-      url: `${this.app.options.urls.photoList}?thumbnail=original_250x0`
+      url: this.app.options.urls.feedList
     })
     .then(res => {
        if (res.ok) {
          return res.json();
        }
 
-       throw new Error('Failed to get photos.');
+       throw new Error('Failed to get feeds.');
      });
   }
 }

@@ -1,13 +1,9 @@
 import Marty from 'marty';
 import React from 'react';
-// import PhotoThumbnail from './PhotoThumbnail';
 
 class UserInfo extends React.Component {
   constructor(props, context) {
     super(props, context);
-
-    this.app.SpotifyAPI.getMe(this.app.options.token)
-
   }
 
   render() {
@@ -16,8 +12,7 @@ class UserInfo extends React.Component {
         <div className="row">
           <div className="col-xs-6">
             <img src={this.props.me.images[0].url} />
-            <p>{this.props.me.display_name}</p>
-            <p>Id: {this.props.me.id}</p>
+            <h2>{this.props.me.display_name}</h2>
           </div>
         </div>
       );
@@ -41,12 +36,4 @@ export default Marty.createContainer(UserInfo, {
   pending() {
     return <div>Loading Your Profile...</div>;
   }
-
-  // componentWillMount() {
-  //   this.app.subscriber.subscribe();
-  // },
-
-  // componentWillUnmount() {
-  //   this.app.subscriber.unsubscribe();
-  // }
 });

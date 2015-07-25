@@ -1,6 +1,7 @@
 var gulp = require("gulp");
 var gutil = require("gulp-util");
 var babel = require("gulp-babel");
+var sass = require('gulp-sass');
 var webpack = require("webpack");
 
 var PRODUCTION = process.env.NODE_ENV === 'production';
@@ -11,7 +12,14 @@ gulp.task("build", function () {
     .pipe(gulp.dest("dist"));
 });
 
-gulp.task('app:build', function(callback) {
+gulp.task('app:sass', function() {
+  return gulp.src('public/sass/*.sass')
+    .pipe(sass())
+    .on('error', gutil.log)
+    .pipe(gulp.dest('public/css'));
+});
+
+gulp.task('app:js', function(callback) {
   var config = {
     entry: {
       'Playlister': __dirname + '/public/js/src/entry.js',
@@ -86,9 +94,12 @@ gulp.task('app:build', function(callback) {
   })
 });
 
+gulp.task('app:build', ['app:js', 'app:sass']);
+
 gulp.task("watch", function() {
   gulp.watch('src/*.js', ['build']);
-  gulp.watch('public/js/src/apps/**/*.js', ['app:build']);
+  gulp.watch('public/js/src/apps/**/*.js', ['app:js']);
+  gulp.watch('public/sass/*.sass', ['app:sass']);
 });
 
 gulp.task('default', ['build', 'app:build', 'watch']);

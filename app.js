@@ -10,6 +10,8 @@ var sass = require('node-sass-middleware');
 
 var index = require('./app/routes/index');
 var appRoute = require('./app/routes/app');
+var apiRoutes = require('./app/routes/api');
+
 var database = require('./app/config/database');
 
 var app = express();
@@ -39,6 +41,7 @@ app.use('/vendor',  express.static(__dirname + '/bower_components'));
 // Routing
 app.use('/', index);
 app.use('/app', appRoute);
+app.use('/api', apiRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

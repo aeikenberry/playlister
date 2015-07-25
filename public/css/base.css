@@ -1,4 +1,8 @@
 body {
   padding-top: 70px; }
 
-/*# sourceMappingURL=base.css.map */
+#login-button {
+  margin-top: 40px; }
+
+.landing p {
+  margin-top: 30px; }

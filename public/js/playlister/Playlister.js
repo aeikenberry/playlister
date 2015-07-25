@@ -30,23 +30,23 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(3);
+	var _marty = __webpack_require__(2);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
-	var _react = __webpack_require__(212);
+	var _react = __webpack_require__(211);
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _ActionCreators = __webpack_require__(368);
+	var _ActionCreators = __webpack_require__(366);
 
 	var _ActionCreators2 = _interopRequireDefault(_ActionCreators);
 
-	var _AppAPI = __webpack_require__(369);
+	var _AppAPI = __webpack_require__(368);
 
 	var _AppAPI2 = _interopRequireDefault(_AppAPI);
 
-	var _SpotifyAPI = __webpack_require__(2);
+	var _SpotifyAPI = __webpack_require__(369);
 
 	var _SpotifyAPI2 = _interopRequireDefault(_SpotifyAPI);
 
@@ -54,11 +54,23 @@ webpackJsonp([0],{
 
 	var _componentsUserInfo2 = _interopRequireDefault(_componentsUserInfo);
 
-	var _Queries = __webpack_require__(371);
+	var _componentsComponentContainer = __webpack_require__(371);
+
+	var _componentsComponentContainer2 = _interopRequireDefault(_componentsComponentContainer);
+
+	var _componentsUserPlaylists = __webpack_require__(373);
+
+	var _componentsUserPlaylists2 = _interopRequireDefault(_componentsUserPlaylists);
+
+	var _componentsFeedList = __webpack_require__(372);
+
+	var _componentsFeedList2 = _interopRequireDefault(_componentsFeedList);
+
+	var _Queries = __webpack_require__(374);
 
 	var _Queries2 = _interopRequireDefault(_Queries);
 
-	var _Store = __webpack_require__(372);
+	var _Store = __webpack_require__(375);
 
 	var _Store2 = _interopRequireDefault(_Store);
 
@@ -78,7 +90,10 @@ webpackJsonp([0],{
 	    this.register('SpotifyAPI', _SpotifyAPI2['default']);
 	    this.register('Queries', _Queries2['default']);
 	    this.register('Store', _Store2['default']);
+	    this.register('ComponentContainer', _componentsComponentContainer2['default']);
 	    this.register('UserInfo', _componentsUserInfo2['default']);
+	    this.register('UserPlaylists', _componentsUserPlaylists2['default']);
+	    this.register('FeedList', _componentsFeedList2['default']);
 	  }
 
 	  _createClass(Playlister, [{
@@ -87,7 +102,7 @@ webpackJsonp([0],{
 	      _react2['default'].render(_react2['default'].createElement(
 	        _marty2['default'].ApplicationContainer,
 	        { app: this },
-	        _react2['default'].createElement(_componentsUserInfo2['default'], null)
+	        _react2['default'].createElement(_componentsComponentContainer2['default'], null)
 	      ), this.options.el);
 	    }
 	  }]);
@@ -100,87 +115,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 2:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-	var _marty = __webpack_require__(3);
-
-	var _marty2 = _interopRequireDefault(_marty);
-
-	var _Constants = __webpack_require__(367);
-
-	var _Constants2 = _interopRequireDefault(_Constants);
-
-	var API = (function (_Marty$HttpStateSource) {
-	  _inherits(API, _Marty$HttpStateSource);
-
-	  function API() {
-	    _classCallCheck(this, API);
-
-	    _get(Object.getPrototypeOf(API.prototype), 'constructor', this).apply(this, arguments);
-	  }
-
-	  _createClass(API, [{
-	    key: 'getMe',
-	    value: function getMe(token) {
-	      return this.get({
-	        url: 'https://api.spotify.com/v1/me',
-	        headers: {
-	          'Authorization': 'Bearer ' + token
-	        }
-	      }).then(function (res) {
-	        if (res.ok) {
-	          return res.json();
-	        }
-	      });
-	    }
-	  }]);
-
-	  return API;
-	})(_marty2['default'].HttpStateSource);
-
-	exports['default'] = API;
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 367:
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-	  value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _marty = __webpack_require__(3);
-
-	var _marty2 = _interopRequireDefault(_marty);
-
-	exports['default'] = _marty2['default'].createConstants(['RECEIVE_MY_PROFILE']);
-	module.exports = exports['default'];
-
-/***/ },
-
-/***/ 368:
+/***/ 366:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -197,7 +132,7 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(3);
+	var _marty = __webpack_require__(2);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
@@ -230,6 +165,81 @@ webpackJsonp([0],{
 
 /***/ },
 
+/***/ 367:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _marty = __webpack_require__(2);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	exports['default'] = _marty2['default'].createConstants(['RECEIVE_MY_PROFILE', 'RECEIVE_PLAYLISTS', 'RECEIVE_FEEDS']);
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 368:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _marty = __webpack_require__(2);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	var API = (function (_Marty$HttpStateSource) {
+	  _inherits(API, _Marty$HttpStateSource);
+
+	  function API() {
+	    _classCallCheck(this, API);
+
+	    _get(Object.getPrototypeOf(API.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(API, [{
+	    key: 'getFeeds',
+	    value: function getFeeds() {
+	      return this.get({
+	        url: this.app.options.urls.feedList
+	      }).then(function (res) {
+	        if (res.ok) {
+	          return res.json();
+	        }
+
+	        throw new Error('Failed to get feeds.');
+	      });
+	    }
+	  }]);
+
+	  return API;
+	})(_marty2['default'].HttpStateSource);
+
+	exports['default'] = API;
+	module.exports = exports['default'];
+
+/***/ },
+
 /***/ 369:
 /***/ function(module, exports, __webpack_require__) {
 
@@ -249,30 +259,50 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(3);
+	var _marty = __webpack_require__(2);
 
 	var _marty2 = _interopRequireDefault(_marty);
+
+	var _Constants = __webpack_require__(367);
+
+	var _Constants2 = _interopRequireDefault(_Constants);
 
 	var API = (function (_Marty$HttpStateSource) {
 	  _inherits(API, _Marty$HttpStateSource);
 
-	  function API() {
+	  function API(options) {
 	    _classCallCheck(this, API);
 
-	    _get(Object.getPrototypeOf(API.prototype), 'constructor', this).apply(this, arguments);
+	    _get(Object.getPrototypeOf(API.prototype), 'constructor', this).call(this, options);
+
+	    this.apiURL = 'https://api.spotify.com/v1/';
+	    this.headers = {
+	      'Authorization': 'Bearer ' + this.app.options.token
+	    };
 	  }
 
 	  _createClass(API, [{
-	    key: 'getPhotos',
-	    value: function getPhotos() {
+	    key: 'getMe',
+	    value: function getMe(token) {
 	      return this.get({
-	        url: this.app.options.urls.photoList + '?thumbnail=original_250x0'
+	        url: this.apiURL + 'me',
+	        headers: this.headers
 	      }).then(function (res) {
 	        if (res.ok) {
 	          return res.json();
 	        }
-
-	        throw new Error('Failed to get photos.');
+	      });
+	    }
+	  }, {
+	    key: 'getMyPlaylists',
+	    value: function getMyPlaylists(userId) {
+	      return this.get({
+	        url: this.apiURL + 'users/' + userId + '/playlists',
+	        headers: this.headers
+	      }).then(function (res) {
+	        if (res.ok) {
+	          return res.json();
+	        }
 	      });
 	    }
 	  }]);
@@ -304,13 +334,11 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(3);
+	var _marty = __webpack_require__(2);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
-	var _react = __webpack_require__(212);
-
-	// import PhotoThumbnail from './PhotoThumbnail';
+	var _react = __webpack_require__(211);
 
 	var _react2 = _interopRequireDefault(_react);
 
@@ -321,8 +349,6 @@ webpackJsonp([0],{
 	    _classCallCheck(this, UserInfo);
 
 	    _get(Object.getPrototypeOf(UserInfo.prototype), 'constructor', this).call(this, props, context);
-
-	    this.app.SpotifyAPI.getMe(this.app.options.token);
 	  }
 
 	  _createClass(UserInfo, [{
@@ -337,15 +363,9 @@ webpackJsonp([0],{
 	            { className: "col-xs-6" },
 	            _react2['default'].createElement('img', { src: this.props.me.images[0].url }),
 	            _react2['default'].createElement(
-	              'p',
+	              'h2',
 	              null,
 	              this.props.me.display_name
-	            ),
-	            _react2['default'].createElement(
-	              'p',
-	              null,
-	              'Id: ',
-	              this.props.me.id
 	            )
 	          )
 	        );
@@ -378,14 +398,6 @@ webpackJsonp([0],{
 	      'Loading Your Profile...'
 	    );
 	  }
-
-	  // componentWillMount() {
-	  //   this.app.subscriber.subscribe();
-	  // },
-
-	  // componentWillUnmount() {
-	  //   this.app.subscriber.unsubscribe();
-	  // }
 	});
 	module.exports = exports['default'];
 
@@ -410,7 +422,302 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _marty = __webpack_require__(3);
+	var _marty = __webpack_require__(2);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	var _react = __webpack_require__(211);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _FeedList = __webpack_require__(372);
+
+	var _FeedList2 = _interopRequireDefault(_FeedList);
+
+	var _UserInfo = __webpack_require__(370);
+
+	var _UserInfo2 = _interopRequireDefault(_UserInfo);
+
+	var _UserPlaylists = __webpack_require__(373);
+
+	var _UserPlaylists2 = _interopRequireDefault(_UserPlaylists);
+
+	var ComponentContainer = (function (_React$Component) {
+	  _inherits(ComponentContainer, _React$Component);
+
+	  function ComponentContainer(props, context) {
+	    _classCallCheck(this, ComponentContainer);
+
+	    _get(Object.getPrototypeOf(ComponentContainer.prototype), 'constructor', this).call(this, props, context);
+	  }
+
+	  _createClass(ComponentContainer, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2['default'].createElement(
+	        'div',
+	        { className: "row" },
+	        _react2['default'].createElement(
+	          'div',
+	          { className: "col-xs-12 col-sm-4" },
+	          _react2['default'].createElement(_UserInfo2['default'], null)
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: "col-xs-12 col-sm-4" },
+	          _react2['default'].createElement(_UserPlaylists2['default'], null)
+	        ),
+	        _react2['default'].createElement(
+	          'div',
+	          { className: "col-xs-12 col-sm-4" },
+	          _react2['default'].createElement(_FeedList2['default'], null)
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ComponentContainer;
+	})(_react2['default'].Component);
+
+	exports['default'] = ComponentContainer;
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 372:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _marty = __webpack_require__(2);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	var _react = __webpack_require__(211);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var FeedList = (function (_React$Component) {
+	  _inherits(FeedList, _React$Component);
+
+	  function FeedList(props, context) {
+	    _classCallCheck(this, FeedList);
+
+	    _get(Object.getPrototypeOf(FeedList.prototype), 'constructor', this).call(this, props, context);
+	  }
+
+	  _createClass(FeedList, [{
+	    key: 'render',
+	    value: function render() {
+	      if (this.props.feeds) {
+
+	        var feeds = this.props.feeds.map(function (feed) {
+	          return _react2['default'].createElement(
+	            'li',
+	            { className: "playist", key: feed.name },
+	            feed.name
+	          );
+	        });
+
+	        return _react2['default'].createElement(
+	          'div',
+	          { className: "row" },
+	          _react2['default'].createElement(
+	            'div',
+	            { className: "col-xs-12" },
+	            _react2['default'].createElement(
+	              'h4',
+	              null,
+	              'Feeds'
+	            ),
+	            _react2['default'].createElement(
+	              'ul',
+	              { className: "list-unstyled" },
+	              feeds
+	            )
+	          )
+	        );
+	      } else {
+	        return _react2['default'].createElement(
+	          'div',
+	          null,
+	          'Whaah Happah'
+	        );
+	      }
+	    }
+	  }]);
+
+	  return FeedList;
+	})(_react2['default'].Component);
+
+	exports['default'] = _marty2['default'].createContainer(FeedList, {
+	  listenTo: 'Store',
+
+	  fetch: {
+	    feeds: function feeds() {
+	      return this.app.Store.getFeeds();
+	    }
+	  },
+
+	  pending: function pending() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      'Loading Your Playlists...'
+	    );
+	  }
+	});
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 373:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _marty = __webpack_require__(2);
+
+	var _marty2 = _interopRequireDefault(_marty);
+
+	var _react = __webpack_require__(211);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var UserPlaylists = (function (_React$Component) {
+	  _inherits(UserPlaylists, _React$Component);
+
+	  function UserPlaylists(props, context) {
+	    _classCallCheck(this, UserPlaylists);
+
+	    _get(Object.getPrototypeOf(UserPlaylists.prototype), 'constructor', this).call(this, props, context);
+	  }
+
+	  _createClass(UserPlaylists, [{
+	    key: 'handleAddPlaylist',
+	    value: function handleAddPlaylist(event) {
+	      event.preventDefault();
+
+	      console.log('they want a new playlist');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      if (this.props.playlists) {
+
+	        var playlists = this.props.playlists.map(function (playlist) {
+	          return _react2['default'].createElement(
+	            'li',
+	            { className: "playist", key: playlist.id },
+	            playlist.name
+	          );
+	        });
+
+	        return _react2['default'].createElement(
+	          'div',
+	          { className: "row" },
+	          _react2['default'].createElement(
+	            'div',
+	            { className: "col-xs-12" },
+	            _react2['default'].createElement(
+	              'h4',
+	              null,
+	              'Playlists'
+	            ),
+	            _react2['default'].createElement(
+	              'ul',
+	              { className: "list-unstyled" },
+	              playlists
+	            ),
+	            _react2['default'].createElement(
+	              'a',
+	              { href: "#", onClick: this.handleAddPlaylist },
+	              '+ Add'
+	            )
+	          )
+	        );
+	      } else {
+	        return _react2['default'].createElement(
+	          'div',
+	          { className: "empty-thumbnail-panel" },
+	          'Whaah Happah'
+	        );
+	      }
+	    }
+	  }]);
+
+	  return UserPlaylists;
+	})(_react2['default'].Component);
+
+	exports['default'] = _marty2['default'].createContainer(UserPlaylists, {
+	  listenTo: 'Store',
+
+	  fetch: {
+	    playlists: function playlists() {
+	      return this.app.Store.getMyPlaylists();
+	    }
+	  },
+
+	  pending: function pending() {
+	    return _react2['default'].createElement(
+	      'div',
+	      null,
+	      'Loading Your Playlists...'
+	    );
+	  }
+	});
+	module.exports = exports['default'];
+
+/***/ },
+
+/***/ 374:
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
+
+	var _marty = __webpack_require__(2);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
@@ -438,6 +745,24 @@ webpackJsonp([0],{
 	        _this.dispatch(_Constants2['default'].RECEIVE_MY_PROFILE, res);
 	      });
 	    }
+	  }, {
+	    key: 'getMyPlaylists',
+	    value: function getMyPlaylists(spotifyUserId) {
+	      var _this2 = this;
+
+	      return this.app.SpotifyAPI.getMyPlaylists(spotifyUserId).then(function (res) {
+	        _this2.dispatch(_Constants2['default'].RECEIVE_PLAYLISTS, res);
+	      });
+	    }
+	  }, {
+	    key: 'getFeeds',
+	    value: function getFeeds() {
+	      var _this3 = this;
+
+	      return this.app.AppAPI.getFeeds().then(function (res) {
+	        _this3.dispatch(_Constants2['default'].RECEIVE_FEEDS, res);
+	      });
+	    }
 	  }]);
 
 	  return Queries;
@@ -448,7 +773,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 372:
+/***/ 375:
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -467,11 +792,11 @@ webpackJsonp([0],{
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
 
-	var _immutable = __webpack_require__(373);
+	var _immutable = __webpack_require__(376);
 
 	var _immutable2 = _interopRequireDefault(_immutable);
 
-	var _marty = __webpack_require__(3);
+	var _marty = __webpack_require__(2);
 
 	var _marty2 = _interopRequireDefault(_marty);
 
@@ -488,11 +813,16 @@ webpackJsonp([0],{
 	    _get(Object.getPrototypeOf(Store.prototype), 'constructor', this).call(this, options);
 
 	    this.state = _immutable2['default'].Map({
-	      me: undefined
+	      me: undefined,
+	      spotifyUserId: undefined,
+	      playlists: undefined,
+	      feeds: undefined
 	    });
 
 	    this.handlers = {
-	      receiveMyProfile: _Constants2['default'].RECEIVE_MY_PROFILE
+	      receiveMyProfile: _Constants2['default'].RECEIVE_MY_PROFILE,
+	      receivePlaylists: _Constants2['default'].RECEIVE_PLAYLISTS,
+	      receiveFeeds: _Constants2['default'].RECEIVE_FEEDS
 	    };
 	  }
 
@@ -512,9 +842,51 @@ webpackJsonp([0],{
 	      });
 	    }
 	  }, {
+	    key: 'getMyPlaylists',
+	    value: function getMyPlaylists() {
+	      return this.fetch({
+	        id: 'playlists',
+	        dependsOn: this.getMe(),
+
+	        locally: function locally() {
+	          return this.state.get('playlists');
+	        },
+
+	        remotely: function remotely() {
+	          return this.app.Queries.getMyPlaylists(this.state.get('spotifyUserId'));
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'getFeeds',
+	    value: function getFeeds() {
+	      return this.fetch({
+	        id: 'feeds',
+
+	        locally: function locally() {
+	          return this.state.get('feeds');
+	        },
+
+	        remotely: function remotely() {
+	          return this.app.Queries.getFeeds();
+	        }
+	      });
+	    }
+	  }, {
 	    key: 'receiveMyProfile',
 	    value: function receiveMyProfile(userData) {
 	      this.state = this.state.set('me', userData);
+	      this.state = this.state.set('spotifyUserId', userData.id);
+	    }
+	  }, {
+	    key: 'receivePlaylists',
+	    value: function receivePlaylists(data) {
+	      this.state = this.state.set('playlists', data.items);
+	    }
+	  }, {
+	    key: 'receiveFeeds',
+	    value: function receiveFeeds(data) {
+	      this.state = this.state.set('feeds', data.feeds);
 	    }
 	  }]);
 
@@ -526,7 +898,7 @@ webpackJsonp([0],{
 
 /***/ },
 
-/***/ 373:
+/***/ 376:
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
