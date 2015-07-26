@@ -21,6 +21,7 @@ export default class Queries extends Marty.Queries {
   }
 
   getFeeds() {
+    console.log('getting feeds');
     return this.app.AppAPI.getFeeds().then(res => {
       this.dispatch(Constants.RECEIVE_FEEDS, res);
     });

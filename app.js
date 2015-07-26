@@ -7,11 +7,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var swig = require('swig');
 
-var index = require('./app/routes/index');
-var appRoute = require('./app/routes/app');
-var apiRoutes = require('./app/routes/api');
+var index = require('./dist/routes/index');
+var appRoute = require('./dist/routes/app');
+var apiRoutes = require('./dist/routes/api');
 
-var database = require('./app/config/database');
+var database = require('./dist/config/database');
 
 var app = express();
 
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Static
-app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/dist/public')));
 app.use('/vendor',  express.static(__dirname + '/bower_components'));
 
 // Routing

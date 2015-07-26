@@ -1,6 +1,7 @@
 import feed from 'feed-read';
 
 export default class PitchforkFeed {
+
     bestNewAlbums(cb) {
         let bestNewAlbumsUrl = 'http://pitchfork.com/rss/reviews/best/albums/';
 

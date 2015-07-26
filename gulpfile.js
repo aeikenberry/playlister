@@ -6,23 +6,52 @@ var webpack = require("webpack");
 
 var PRODUCTION = process.env.NODE_ENV === 'production';
 
-gulp.task("build", function () {
-  return gulp.src('src/*.js')
+/*    Server
+ */
+gulp.task("server:config", function () {
+  return gulp.src('src/config/*.js')
     .pipe(babel())
-    .pipe(gulp.dest("dist"));
+    .pipe(gulp.dest("dist/config"));
 });
 
+gulp.task("server:feeder", function () {
+  return gulp.src('src/feeder/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest("dist/feeder"));
+});
+
+gulp.task("server:models", function () {
+  return gulp.src('src/models/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest("dist/models"));
+});
+
+gulp.task("server:routes", function () {
+  return gulp.src('src/routes/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest("dist/routes"));
+});
+
+gulp.task('build:server', [
+  'server:config',
+  'server:feeder',
+  'server:models',
+  'server:routes'
+]);
+
+/*    Web App
+ */
 gulp.task('app:sass', function() {
-  return gulp.src('public/sass/*.sass')
+  return gulp.src('src/public/sass/*.sass')
     .pipe(sass())
     .on('error', gutil.log)
-    .pipe(gulp.dest('public/css'));
+    .pipe(gulp.dest('dist/public/css'));
 });
 
-gulp.task('app:js', function(callback) {
+gulp.task('app:Playlister', function(callback) {
   var config = {
     entry: {
-      'Playlister': __dirname + '/public/js/src/entry.js',
+      'Playlister': __dirname + '/src/public/js/playlister-main.js',
       'vendor': [
         'lodash',
         'marty',
@@ -47,7 +76,7 @@ gulp.task('app:js', function(callback) {
       extensions: ['', '.jsx', '.js', '.json']
     },
     output: {
-      path: __dirname + '/public/js/playlister',
+      path: __dirname + '/dist/public/js/playlister',
       filename: '[name].js',
     }
   };
@@ -94,12 +123,23 @@ gulp.task('app:js', function(callback) {
   })
 });
 
-gulp.task('app:build', ['app:js', 'app:sass']);
-
-gulp.task("watch", function() {
-  gulp.watch('src/*.js', ['build']);
-  gulp.watch('public/js/src/apps/**/*.js', ['app:js']);
-  gulp.watch('public/sass/*.sass', ['app:sass']);
+gulp.task('app:main', function() {
+  return gulp.src('src/public/js/*.js')
+    .pipe(babel())
+    .pipe(gulp.dest("dist/public/js"));
 });
 
-gulp.task('default', ['build', 'app:build', 'watch']);
+gulp.task('build:app', ['app:Playlister', 'app:main', 'app:sass']);
+
+gulp.task("watch", function() {
+  gulp.watch('src/config/*.js', ['server:config']);
+  gulp.watch('src/feeder/*.js', ['server:feeder']);
+  gulp.watch('src/models/*.js', ['server:models']);
+  gulp.watch('src/routes/*.js', ['server:routes']);
+  gulp.watch('src/public/js/*.js', ['app:main']);
+  gulp.watch('src/public/js/Playlister/**/*.js', ['app:Playlister']);
+  gulp.watch('src/public/sass/*.sass', ['app:sass']);
+});
+
+gulp.task('build', ['build:server', 'build:app']);
+gulp.task('default', ['build', 'watch']);

@@ -1,4 +1,7 @@
 import async from 'async';
+import mongoose from 'mongoose';
+
+import FeedProvider from '../models/FeedProvider';
 import Pitchfork from './pitchfork';
 import Spotify from './spotify';
 
