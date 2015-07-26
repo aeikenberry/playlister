@@ -1,8 +1,11 @@
+var del = require('del');
 var gulp = require("gulp");
+var concat = require("gulp-concat");
 var gutil = require("gulp-util");
 var babel = require("gulp-babel");
 var sass = require('gulp-sass');
 var webpack = require("webpack");
+var CompressionPlugin = require('compression-webpack-plugin');
 
 var PRODUCTION = process.env.NODE_ENV === 'production';
 
@@ -141,5 +144,12 @@ gulp.task("watch", function() {
   gulp.watch('src/public/sass/*.sass', ['app:sass']);
 });
 
-gulp.task('build', ['build:server', 'build:app']);
+gulp.task('clean', function(callback) {
+  del(['dist'], callback);
+});
+
+gulp.task('build', ['clean'], function() {
+  gulp.run(['build:server', 'build:app']);
+});
+
 gulp.task('default', ['build', 'watch']);
