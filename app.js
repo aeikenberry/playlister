@@ -14,6 +14,7 @@ var apiRoutes = require('./dist/routes/api');
 var database = require('./dist/config/database');
 
 var app = express();
+mongoose.connect(database.url);
 
 // view engine setup
 app.engine('html', swig.renderFile);

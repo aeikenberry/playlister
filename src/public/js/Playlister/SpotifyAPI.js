@@ -17,9 +17,9 @@ export default class API extends Marty.HttpStateSource {
       headers: this.headers
     })
     .then(res => {
-       if (res.ok) {
-         return res.json();
-       }
+      if (res.ok) {
+       return res.json();
+      }
      });
   }
 
