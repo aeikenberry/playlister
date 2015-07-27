@@ -7,7 +7,8 @@ let feedSchema = new Schema({
   description: String,
   url: String,
   lastFetched: Date,
-  tracks: []
+  tracks: [],
+  albumFeed: Boolean
 });
 
 export default mongoose.model('Feed', feedSchema);

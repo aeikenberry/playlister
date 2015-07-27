@@ -6,15 +6,33 @@ class FeedList extends React.Component {
     super(props, context);
   }
 
-  feedTracks(tracks) {
+  feedTracks(feed) {
     console.log('inside feedtracks');
-    let _tracks = tracks.map((track) => {
-      return (
-        <li className="track" key={track.id}>
-          <a href={track.preview_url} _target="blank">{track.name}</a>
-        </li>
-      );
-    });
+    if (!feed.albumFeed) {
+      let _tracks = feed.tracks.map((track) => {
+        return (
+          <li className="track" key={track.id}>
+            <a href={track.preview_url} _target="blank">{track.name}</a>
+          </li>
+        );
+      });
+    } else {
+      let albums = feed.tracks.map((track) => {
+        return track.album.name;
+      }).filter(
+        (item, i, ar) => {
+          return ar.indexOf(item) === i;
+      });
+
+      let _tracks = albums.map((album) => {
+        return (
+          <li className="track" key={album}>
+            <a>{album}</a>
+          </li>
+        );
+      });
+    }
+
 
     return (
       <ul className="list-unstyled">
@@ -30,7 +48,7 @@ class FeedList extends React.Component {
         return (
           <li className="playist" key={feed._id}>
             <h5>{feed.name} <small>{feed.description}</small></h5>
-            {this.feedTracks(feed.tracks)}
+            {this.feedTracks(feed)}
           </li>
         );
       });

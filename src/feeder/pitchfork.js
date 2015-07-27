@@ -3,6 +3,10 @@ import Feed from '../models/Feed';
 
 class PitchforkFeed {
 
+  constructor(options) {
+    this.albumFeed = false;
+  }
+
   _parseDataParts(parts) {
     throw new Error("Must implement _parseDataParts");
   }
@@ -36,7 +40,13 @@ class PitchforkFeed {
 
   addTracks(tracks, done) {
     console.log('updaging feeds');
-    let feed = {name: this.name, description: this.description, url: this.url};
+
+    let feed = {
+      name: this.name,
+      description: this.description,
+      url: this.url,
+      albumFeed: this.albumFeed
+    };
 
     Feed.findOne(feed, (err, found) => {
 
@@ -63,6 +73,7 @@ export class BestNewAlbums extends PitchforkFeed {
     this.url = 'http://pitchfork.com/rss/reviews/best/albums/';
     this.name = 'Pitchfork Best New Albums';
     this.description = 'Pitchfork.com\'s curated Best New Albums';
+    this.albumFeed = true;
   }
 
   getSpotifyLookupString(title) {
