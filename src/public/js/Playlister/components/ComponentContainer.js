@@ -12,13 +12,13 @@ export default class ComponentContainer extends React.Component {
   render() {
     return (
       <div className="row">
-        <div className="col-xs-12 col-sm-4">
+        <div className="col-xs-12 col-sm-3">
           <UserInfo  />
         </div>
         <div className="col-xs-12 col-sm-4">
           <UserPlaylists />
         </div>
-        <div className="col-xs-12 col-sm-4">
+        <div className="col-xs-12 col-sm-5">
           <FeedList />
         </div>
       </div>
