@@ -63,6 +63,6 @@ export default Marty.createContainer(FeedList, {
   },
 
   pending() {
-    return <div>Loading Your Playlists...</div>;
+    return <div>Loading Data Feeds...</div>;
   }
 });
