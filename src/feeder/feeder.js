@@ -1,51 +1,80 @@
 import async from 'async';
 import mongoose from 'mongoose';
 
-import FeedProvider from '../models/FeedProvider';
-import Pitchfork from './pitchfork';
+import database from '../config/database';
+import Feed from '../models/Feed';
+import {BestNewAlbums, BestNewTracks} from './pitchfork';
 import Spotify from './spotify';
 
-let pitchfork = new Pitchfork();
+let feeds = [new BestNewAlbums(), new BestNewTracks()];
+
 let spotify = new Spotify();
 
 async.waterfall([
-  (done) => {
-    pitchfork.bestNewAlbums((titles) => {
-      console.log('done with titles');
-      done(null, titles);
-    });
+
+  // Connect to the database
+  (callback) => {
+    mongoose.connect(database.url, callback);
   },
-  (titles, done) => {
+
+  // Set our Spotify Auth
+  (callback) => {
     spotify.setAuth((api) => {
-      done(null, titles, api);
+      callback(null, api);
     });
   },
 
-  (titles, api, done) => {
-    async.each(titles, (title, cb) => {
-      api.searchTracks(`album:${title.album}`)
-        .then((data) => {
-          let tracks = [];
-          data.body.tracks.items.forEach((track) => {
-            console.log(track);
+  // Populate the feeds
+  (api, callback) => {
+
+    async.each(feeds, (feed, eachDone) => {
+
+      // Each Feed => Feeder
+      async.waterfall([
+
+        // Get the feed data
+        (done) => {
+          feed.getFeed((titles) => {
+            done(null, titles);
           });
-          return api.addTracksToPlaylist(spotify.myUserId, playlist, tracks);
-        })
-        .then((data) => {
-          cb();
-        }, (err) => {
-          console.log('error adding track to playlist', err);
-          cb(err);
-        })
+        },
+
+        (titles, done) => {
+
+          // Lookup Spotify tracks
+          async.eachSeries(titles, (title, cb) => {
+            api.searchTracks(feed.getSpotifyLookupString(title), feed.getSearchOptions())
+              .then((data) => {
+                return feed.addTracks(data.body.tracks.items, cb);
+              }, (err) => {
+                console.log(err);
+                err ? cb(err) : cb();
+              });
+          }, (err) => {
+            if (err) {
+              done(err);
+            } else {
+              done();
+            }
+          });
+        }
+      ], (err) => {
+        if (err) {
+          console.log('Error feeding Feed: ' + feed.name, err);
+          eachDone(err);
+        }
+        console.log('Finshed with Feed: ' + feed.name);
+        eachDone();
+      });
+
     }, (err) => {
-      if (err) {
-        done(err);
-      } else {
-        done();
-      }
-    });
+      if (err) console.log(err);
+      callback();
+    })
   }
-], function(err) {
+
+], (err) => {
   if (err) console.log(err);
-  console.log('finished.');
+  mongoose.disconnect();
+  console.log('exiting');
 });

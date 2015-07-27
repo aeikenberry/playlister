@@ -1,18 +1,19 @@
-var express = require('express');
-var router = express.Router();
+import express from 'express';
+import Feed from '../models/Feed';
 
-var FeedProvider = require('../models/FeedProvider');
+let router = express.Router();
 
 /* GET home page. */
-router.get('/feeds', function(req, res, next) {
-  FeedProvider.find(function(err, providers) {
+router.get('/feeds', (req, res, next) => {
+  
+  Feed.find((err, feeds) => {
     if (err) {
       res.send(err);
       return;
     }
 
-    res.send({'providers': providers});
+    res.send({'feeds': feeds});
   });
 });
 
-module.exports = router;
+export default router;

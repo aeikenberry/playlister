@@ -6,12 +6,32 @@ class FeedList extends React.Component {
     super(props, context);
   }
 
+  feedTracks(tracks) {
+    console.log('inside feedtracks');
+    let _tracks = tracks.map((track) => {
+      return (
+        <li className="track" key={track.id}>
+          <a href={track.preview_url} _target="blank">{track.name}</a>
+        </li>
+      );
+    });
+
+    return (
+      <ul className="list-unstyled">
+        {_tracks}
+      </ul>
+    );
+  }
+
   render() {
     if (this.props.feeds) {
 
       let feeds = this.props.feeds.map((feed) => {
         return (
-          <li className="playist" key={feed.name}>{feed.name}</li>
+          <li className="playist" key={feed._id}>
+            <h5>{feed.name} <small>{feed.description}</small></h5>
+            {this.feedTracks(feed.tracks)}
+          </li>
         );
       });
 
