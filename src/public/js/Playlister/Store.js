@@ -73,6 +73,7 @@ export default class Store extends Marty.Store {
   }
 
   receiveFeeds(data) {
+    console.log('got feeds', data);
     this.state = this.state.set('feeds', data.feeds);
   }
 

@@ -1,4 +1,6 @@
 import feed from 'feed-read';
+import _ from 'lodash';
+
 import Feed from '../models/Feed';
 
 class PitchforkFeed {
@@ -35,11 +37,11 @@ class PitchforkFeed {
   }
 
   getSearchOptions() {
-    return {};
+    return '';
   }
 
   addTracks(tracks, done) {
-    console.log('updaging feeds');
+    console.log('updating feeds');
 
     let feed = {
       name: this.name,
@@ -52,7 +54,12 @@ class PitchforkFeed {
 
       if (found) {
         console.log(this.name, !!found);
-        Feed.findOneAndUpdate(feed, {$pushAll: {tracks: tracks}}, {}, (err, feed) => {
+        let tracks = _.uniq(found.tracks.concat(tracks), 'id')
+                      .filter((track) => {
+                        return track != null;
+                      });
+
+        Feed.findOneAndUpdate(feed, {tracks: tracks}, {}, (err, feed) => {
           if (err) console.log(err);
           done();
         });
@@ -77,7 +84,7 @@ export class BestNewAlbums extends PitchforkFeed {
   }
 
   getSpotifyLookupString(title) {
-    return `album:"${title.album}"`;
+    return `artist:"${title.artist}"+album:"${title.album}"`;
   }
 
   _parseParts(parts) {
@@ -97,11 +104,13 @@ export class BestNewTracks extends PitchforkFeed {
   }
 
   getSearchOptions() {
-    return {limit: 1};
+    return '&limit=1';
   }
 
   getSpotifyLookupString(title) {
-    return `track:"${title.track}"`;
+    let track = encodeURIComponent(title.track);
+    let artist = encodeURIComponent(title.artist);
+    return `artist:"${artist}"+track:"${track}"`;
   }
 
   _parseParts(parts) {

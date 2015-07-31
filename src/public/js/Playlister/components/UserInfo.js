@@ -1,18 +1,29 @@
 import Marty from 'marty';
 import React from 'react';
+import mui from 'material-ui';
+import ThemeManager from 'material-ui/lib/styles/theme-manager';
+
+let Avatar = mui.Avatar;
+let themeManager = ThemeManager();
 
 class UserInfo extends React.Component {
   constructor(props, context) {
     super(props, context);
   }
 
+  getChildContext() {
+    return {
+      muiTheme: themeManager.getCurrentTheme()
+    };
+  }
+
   render() {
     if (this.props.me) {
       return (
-        <div className="row">
+        <div className="row userInfo">
           <div className="col-xs-6">
-            <img src={this.props.me.images[0].url} />
-            <h2>{this.props.me.display_name}</h2>
+            <Avatar src={this.props.me.images[0].url} />
+            <h4>{this.props.me.display_name}</h4>
           </div>
         </div>
       );
@@ -23,6 +34,10 @@ class UserInfo extends React.Component {
     }
   }
 }
+
+UserInfo.childContextTypes = {
+  muiTheme: React.PropTypes.object
+};
 
 export default Marty.createContainer(UserInfo, {
   listenTo: 'Store',

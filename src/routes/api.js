@@ -5,13 +5,13 @@ let router = express.Router();
 
 /* GET home page. */
 router.get('/feeds', (req, res, next) => {
-  
+
   Feed.find((err, feeds) => {
     if (err) {
       res.send(err);
       return;
     }
-
+    console.log(feeds);
     res.send({'feeds': feeds});
   });
 });

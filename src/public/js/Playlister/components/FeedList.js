@@ -1,66 +1,119 @@
 import Marty from 'marty';
 import React from 'react';
+import mui from 'material-ui';
+import ThemeManager from 'material-ui/lib/styles/theme-manager';
+import _ from 'lodash';
+
+let Avatar = mui.Avatar;
+let Card = mui.Card;
+let CardActions = mui.CardActions;
+let CardHeader = mui.CardHeader;
+let CardText = mui.CardText;
+let Dialog = mui.Dialog;
+let FlatButton = mui.FlatButton;
+let FontIcon = mui.FontIcon;
+let List = mui.List;
+let ListItem = mui.ListItem;
+let RaisedButton = mui.RaisedButton;
+let themeManager = ThemeManager();
 
 class FeedList extends React.Component {
   constructor(props, context) {
     super(props, context);
+    this.childContextTypes = {
+      muiTheme: React.PropTypes.object
+    };
+  }
+
+  getChildContext() {
+    return {
+      muiTheme: themeManager.getCurrentTheme()
+    };
+  }
+
+  handleSubscribeClick(feed) {
+    // show the playlist picker
+  }
+
+  handlePlaylistClick(playlist, feed) {
+    // subscribe them
   }
 
   feedTracks(feed) {
-    console.log('inside feedtracks');
+    let _tracks = [];
+    let playButtonStyle = {
+      marginRight: '20px'
+    };
+
     if (!feed.albumFeed) {
-      let _tracks = feed.tracks.map((track) => {
+      _tracks = feed.tracks.map((track) => {
         return (
-          <li className="track" key={track.id}>
-            <a href={track.preview_url} _target="blank">{track.name}</a>
-          </li>
+          <ListItem
+            leftAvatar={<Avatar src={track.album.images[1].url} />}
+            primaryText={track.artists[0].name + ' - ' + track.name}
+            rightIcon={<FontIcon className="material-icons" style={playButtonStyle}>play_circle_outline</FontIcon>} />
         );
       });
     } else {
-      let albums = feed.tracks.map((track) => {
-        return track.album.name;
-      }).filter(
-        (item, i, ar) => {
-          return ar.indexOf(item) === i;
-      });
-
-      let _tracks = albums.map((album) => {
+      let albums = _.uniq(feed.tracks.map((track) => {
+        return {name: track.album.name, artist: track.artists[0].name, image: track.album.images[1].url};
+      }), 'name');
+      _tracks = albums.map((album) => {
         return (
-          <li className="track" key={album}>
-            <a>{album}</a>
-          </li>
+          <ListItem
+            leftAvatar={<Avatar src={album.image} />}
+            primaryText={album.artist + ' - ' + album.name} />
         );
       });
     }
 
-
     return (
-      <ul className="list-unstyled">
+      <List expandable={true}>
         {_tracks}
-      </ul>
+      </List>
     );
   }
 
   render() {
     if (this.props.feeds) {
 
+      var subscribeButton = {
+        float: 'right',
+        marginRight: '50px'
+      };
+
       let feeds = this.props.feeds.map((feed) => {
         return (
-          <li className="playist" key={feed._id}>
-            <h5>{feed.name} <small>{feed.description}</small></h5>
+          <Card initiallyExpanded={false}>
+            <CardHeader
+              title={feed.name}
+              subtitle={feed.description}
+              showExpandableButton={true}
+              avatar={<Avatar icon={<FontIcon className="material-icons">queue_music</FontIcon>} />} >
+              <RaisedButton label="Subscribe" primary={true} style={subscribeButton} />
+            </CardHeader>
             {this.feedTracks(feed)}
-          </li>
+          </Card>
         );
       });
 
+      let standardActions = [
+        { text: 'Cancel' },
+        { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
+      ];
+
       return (
-        <div className="row">
+        <div className="row feedList">
           <div className="col-xs-12">
-            <h4>Feeds</h4>
-            <ul className="list-unstyled">
-              {feeds}
-            </ul>
+            {feeds}
           </div>
+          <Dialog
+            title="This will be the dialog where you pick which playlist you want."
+            actions={standardActions}
+            actionFocus="submit"
+            modal={true}
+            openImmediately={false} >
+          </Dialog>
         </div>
       );
     } else {
@@ -70,6 +123,10 @@ class FeedList extends React.Component {
     }
   }
 }
+
+FeedList.childContextTypes = {
+  muiTheme: React.PropTypes.object
+};
 
 export default Marty.createContainer(FeedList, {
   listenTo: 'Store',

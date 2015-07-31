@@ -1,5 +1,6 @@
 import async from 'async';
 import mongoose from 'mongoose';
+import request from 'request-promise';
 
 import database from '../config/database';
 import Feed from '../models/Feed';
@@ -43,9 +44,15 @@ async.waterfall([
 
           // Lookup Spotify tracks
           async.eachSeries(titles, (title, cb) => {
-            api.searchTracks(feed.getSpotifyLookupString(title), feed.getSearchOptions())
-              .then((data) => {
-                return feed.addTracks(data.body.tracks.items, cb);
+            request({
+              uri: `https://api.spotify.com/v1/search?query=${feed.getSpotifyLookupString(title)}&type=track${feed.getSearchOptions()}`,
+              resolveWithFullResponse: true}).then((data) => {
+                let body = JSON.parse(data.body);
+                if (body.tracks.items.length) {
+                  return feed.addTracks(body.tracks.items, cb);
+                } else {
+                  cb();
+                }
               }, (err) => {
                 console.log(err);
                 err ? cb(err) : cb();

@@ -47,8 +47,8 @@ window.loginUser = function() {
   window.location = url;
 }
 
-$(function() {
-  $('#login-button').click(function() {
-    loginUser();
-  });
-});
+// $(function() {
+//   $('#login-button').click(function() {
+//     loginUser();
+//   });
+// });

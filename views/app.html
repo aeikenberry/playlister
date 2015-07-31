@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div id="js-user-app">Loading...</div>
+<div class="container">
+  <div class="row">
+      <div id="js-user-app">Loading...</div>
+  </div>
 </div>
 {% endblock %}
 
@@ -16,11 +18,12 @@
         var params = getHashParams();
 
         var access_token = params.access_token,
+            refresh_token = params.refresh_token,
             state = params.state;
 
         var $el = $('#js-user-app');
 
-        if (!access_token) {
+        if (!access_token || !refresh_token) {
             $el.html('There was a problem retreiving your access token');
             return;
         }
@@ -28,6 +31,7 @@
         new Playlister({
             el: $el.get(0),
             token: access_token,
+            refreshToken : refresh_token,
             urls: {
                 feedList: '/api/feeds'
             }

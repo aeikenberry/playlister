@@ -1,5 +1,7 @@
 import Marty from 'marty';
 import React from 'react';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import ActionCreators from './ActionCreators';
 import AppAPI from './AppAPI';
 import SpotifyAPI from './SpotifyAPI';
@@ -14,6 +16,8 @@ export default class Playlister extends Marty.Application {
   constructor(options) {
     Marty.HttpStateSource.removeHook('parseJSON');
     super(options);
+
+    injectTapEventPlugin();
 
     this.options = options;
 
