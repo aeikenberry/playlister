@@ -21,9 +21,10 @@ class UserInfo extends React.Component {
     if (this.props.me) {
       return (
         <div className="row userInfo">
-          <div className="col-xs-6">
-            <Avatar src={this.props.me.images[0].url} />
-            <h4>{this.props.me.display_name}</h4>
+          <div className="col-xs-12">
+            <Avatar src={this.props.me.images[0].url}>
+              <h4 style={{left: '67px', top: '0', position: 'absolute'}}>{this.props.me.display_name}</h4>
+            </Avatar>
           </div>
         </div>
       );
