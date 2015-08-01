@@ -20,9 +20,7 @@ let themeManager = ThemeManager();
 class FeedList extends React.Component {
   constructor(props, context) {
     super(props, context);
-    this.childContextTypes = {
-      muiTheme: React.PropTypes.object
-    };
+    this.playing = null;
   }
 
   getChildContext() {
@@ -36,7 +34,17 @@ class FeedList extends React.Component {
   }
 
   handlePlaylistClick(playlist, feed) {
-    // subscribe them
+    // somthing
+  }
+
+  handleTrackClick(track) {
+    if (this.playing) {
+      this.playing.pause();
+      this.playing = null;
+    }
+
+    this.playing = new Audio(track.preview_url);
+    this.playing.play();
   }
 
   feedTracks(feed) {
@@ -49,6 +57,7 @@ class FeedList extends React.Component {
       _tracks = feed.tracks.map((track) => {
         return (
           <ListItem
+            onTouchTap={this.handleTrackClick.bind(this, track)}
             leftAvatar={<Avatar src={track.album.images[1].url} />}
             primaryText={track.artists[0].name + ' - ' + track.name}
             rightIcon={<FontIcon className="material-icons" style={playButtonStyle}>play_circle_outline</FontIcon>} />
