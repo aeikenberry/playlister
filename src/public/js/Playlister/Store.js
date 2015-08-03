@@ -10,13 +10,15 @@ export default class Store extends Marty.Store {
       me: undefined,
       spotifyUserId: undefined,
       playlists: undefined,
-      feeds: undefined
+      feeds: undefined,
+      subscriptions: undefined
     });
 
     this.handlers = {
       receiveMyProfile: Constants.RECEIVE_MY_PROFILE,
       receivePlaylists: Constants.RECEIVE_PLAYLISTS,
-      receiveFeeds: Constants.RECEIVE_FEEDS
+      receiveFeeds: Constants.RECEIVE_FEEDS,
+      receiveSubscriptions: Constants.RECEIVE_SUBSCRIPTIONS
     };
   }
 
@@ -63,6 +65,20 @@ export default class Store extends Marty.Store {
     });
   }
 
+  getSubscriptions() {
+    return this.fetch({
+      id: 'subscriptions',
+
+      locally() {
+        return this.state.get('subscriptions');
+      },
+
+      remotely() {
+        return this.app.Queries.getSubscriptions();
+      }
+    });
+  }
+
   receiveMyProfile(userData) {
     this.state = this.state.set('me', userData);
     this.state = this.state.set('spotifyUserId', userData.id);
@@ -73,8 +89,15 @@ export default class Store extends Marty.Store {
   }
 
   receiveFeeds(data) {
-    console.log('got feeds', data);
     this.state = this.state.set('feeds', data.feeds);
+  }
+
+  receiveSubscriptions(data) {
+    if (!!data.subscriber) {
+      this.state = this.state.set('subscriptions', data.subscriber.subscriptions);
+    } else {
+      this.state = this.state.set('subscriptions', []);
+    }
   }
 
 }

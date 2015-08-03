@@ -7,8 +7,8 @@ import AppAPI from './AppAPI';
 import SpotifyAPI from './SpotifyAPI';
 import UserInfo from './components/UserInfo';
 import ComponentContainer from './components/ComponentContainer';
-import UserPlaylists from './components/UserPlaylists';
 import FeedList from './components/FeedList';
+import SubscriptionList from './components/SubscriptionList';
 import Queries from './Queries';
 import Store from './Store';
 
@@ -28,8 +28,8 @@ export default class Playlister extends Marty.Application {
     this.register('Store', Store);
     this.register('ComponentContainer', ComponentContainer);
     this.register('UserInfo', UserInfo);
-    this.register('UserPlaylists', UserPlaylists);
     this.register('FeedList', FeedList);
+    this.register('SubscriptionList', SubscriptionList);
   }
 
   start() {

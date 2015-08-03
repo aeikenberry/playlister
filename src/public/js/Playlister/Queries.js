@@ -25,4 +25,10 @@ export default class Queries extends Marty.Queries {
       this.dispatch(Constants.RECEIVE_FEEDS, res);
     });
   }
+
+  getSubscriptions() {
+    return this.app.AppAPI.getSubscriptions().then(res => {
+      this.dispatch(Constants.RECEIVE_SUBSCRIPTIONS, res);
+    });
+  }
 }

@@ -4,23 +4,28 @@ import mui from 'material-ui';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import _ from 'lodash';
 
+import SubscriptionDialog from './SubscriptionDialog';
+
 let Avatar = mui.Avatar;
 let Card = mui.Card;
 let CardActions = mui.CardActions;
 let CardHeader = mui.CardHeader;
 let CardText = mui.CardText;
-let Dialog = mui.Dialog;
 let FlatButton = mui.FlatButton;
 let FontIcon = mui.FontIcon;
+let IconMenu = mui.IconMenu;
+let IconButton = mui.IconButton;
 let List = mui.List;
 let ListItem = mui.ListItem;
 let RaisedButton = mui.RaisedButton;
+let MenuItem = require('material-ui/lib/menus/menu-item');
 let themeManager = ThemeManager();
 
 class FeedList extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.playing = null;
+    this.seletedFeed = null;
   }
 
   getChildContext() {
@@ -30,11 +35,9 @@ class FeedList extends React.Component {
   }
 
   handleSubscribeClick(feed) {
-    // show the playlist picker
-  }
-
-  handlePlaylistClick(playlist, feed) {
-    // somthing
+    this.setState({ selectedFeed: feed }, () => {
+      this.refs.subscriptionDialog.refs.innerComponent.refs.dialog.show()
+    });
   }
 
   handleTrackClick(track) {
@@ -58,20 +61,45 @@ class FeedList extends React.Component {
         return (
           <ListItem
             onTouchTap={this.handleTrackClick.bind(this, track)}
-            leftAvatar={<Avatar src={track.album.images[1].url} />}
+            leftAvatar={<Avatar src={track.album.images[1].url} /> }
             primaryText={track.artists[0].name + ' - ' + track.name}
-            rightIcon={<FontIcon className="material-icons" style={playButtonStyle}>play_circle_outline</FontIcon>} />
+            rightIcon={
+              <FontIcon className="material-icons" style={playButtonStyle}>play_circle_outline</FontIcon>} />
         );
       });
     } else {
+      let albumTracks = {};
+
       let albums = _.uniq(feed.tracks.map((track) => {
-        return {name: track.album.name, artist: track.artists[0].name, image: track.album.images[1].url};
+        let image;
+        if (track.album.images.length) {
+          image = track.album.images[1].url;
+        } else {
+          image = '';
+        }
+
+        let artistName;
+        if (track.artists.length) {
+          artistName = track.artists[0].name;
+        } else {
+          artistName = '???';
+        }
+
+        if (!albumTracks.hasOwnProperty(track.album.name)) {
+          albumTracks[track.album.name] = track;
+        }
+
+        return { name: track.album.name, artist: artistName, image: image };
       }), 'name');
+
       _tracks = albums.map((album) => {
+        var track = albumTracks[album.name];
         return (
           <ListItem
+            onTouchTap={this.handleTrackClick.bind(this, track)}
             leftAvatar={<Avatar src={album.image} />}
-            primaryText={album.artist + ' - ' + album.name} />
+            primaryText={album.artist + ' - ' + album.name}
+            rightIcon={<FontIcon className="material-icons" style={playButtonStyle}>play_circle_outline</FontIcon>} />
         );
       });
     }
@@ -84,52 +112,35 @@ class FeedList extends React.Component {
   }
 
   render() {
-    if (this.props.feeds) {
+    var subscribeButton = {
+      float: 'right',
+      marginRight: '50px'
+    };
 
-      var subscribeButton = {
-        float: 'right',
-        marginRight: '50px'
-      };
-
-      let feeds = this.props.feeds.map((feed) => {
-        return (
-          <Card initiallyExpanded={false}>
-            <CardHeader
-              title={feed.name}
-              subtitle={feed.description}
-              showExpandableButton={true}
-              avatar={<Avatar icon={<FontIcon className="material-icons">queue_music</FontIcon>} />} >
-              <RaisedButton label="Subscribe" primary={true} style={subscribeButton} />
-            </CardHeader>
-            {this.feedTracks(feed)}
-          </Card>
-        );
-      });
-
-      let standardActions = [
-        { text: 'Cancel' },
-        { text: 'Submit', onTouchTap: this._onDialogSubmit, ref: 'submit' }
-      ];
-
+    let feeds = this.props.feeds.map((feed) => {
       return (
-        <div className="row feedList">
-          <div className="col-xs-12">
-            {feeds}
-          </div>
-          <Dialog
-            title="This will be the dialog where you pick which playlist you want."
-            actions={standardActions}
-            actionFocus="submit"
-            modal={true}
-            openImmediately={false} >
-          </Dialog>
+        <Card initiallyExpanded={false}>
+          <CardHeader
+            title={feed.name}
+            subtitle={feed.description}
+            showExpandableButton={true}
+            avatar={<Avatar icon={<FontIcon className="material-icons">queue_music</FontIcon>} />} >
+            <RaisedButton label="Subscribe" primary={true} style={subscribeButton} onTouchTap={this.handleSubscribeClick.bind(this, feed)} />
+          </CardHeader>
+          {this.feedTracks(feed)}
+        </Card>
+      );
+    });
+
+    return (
+      <div className="row feedList">
+        <div className="col-xs-12">
+          {feeds}
+          <SubscriptionDialog feed={this.state ? this.state.selectedFeed : null} ref="subscriptionDialog" />
         </div>
-      );
-    } else {
-      return (
-        <div>Whaah Happah</div>
-      );
-    }
+      </div>
+    );
+
   }
 }
 
