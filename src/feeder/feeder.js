@@ -15,18 +15,12 @@ async.waterfall([
 
   // Connect to the database
   (callback) => {
+    console.log('connect');
     mongoose.connect(database.url, callback);
   },
 
-  // Set our Spotify Auth
-  (callback) => {
-    spotify.setAuth((api) => {
-      callback(null, api);
-    });
-  },
-
   // Populate the feeds
-  (api, callback) => {
+  (callback) => {
 
     async.each(feeds, (feed, eachDone) => {
 
@@ -41,15 +35,15 @@ async.waterfall([
         },
 
         (titles, done) => {
-
+          console.log('Looking up Tracks');
           // Lookup Spotify tracks
           async.eachSeries(titles, (title, cb) => {
             request({
-              uri: `https://api.spotify.com/v1/search?query=${feed.getSpotifyLookupString(title)}&type=track${feed.getSearchOptions()}`,
+              uri: `https://api.spotify.com/v1/search?query=${feed.getSpotifyLookupString(title)}&market=US&type=track${feed.getSearchOptions()}`,
               resolveWithFullResponse: true}).then((data) => {
                 let body = JSON.parse(data.body);
                 if (body.tracks.items.length) {
-                  return feed.addTracks(body.tracks.items, cb);
+                  feed.addTracks(body.tracks.items, cb);
                 } else {
                   cb();
                 }
@@ -68,23 +62,23 @@ async.waterfall([
 
         // Update the spotify playlists
         (done) => {
+          console.log('starting the playlists');
           async.waterfall([
             d => {
               spotify.getToken(t => {
                 d(null, t);
               });
             },
-            (d, token) => {
-              spotify.addTracksToFeed(feed, token, res => {
-                d(null);
-              });
+            (token, d) => {
+              spotify.addTracksToFeed(feed, token, d);
             }
           ], err => {
             if (err) {
               console.log(err);
               return done(err);
-              done();
             }
+
+            done();
           });
         }
       ], (err) => {

@@ -18,12 +18,13 @@ export default class Spotify {
   }
 
   getToken(cb) {
+    console.log(this.refresh_token, this.redirect_uri);
     var authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
-        code: this.refresh_token,
+        refresh_token: this.refresh_token,
         redirect_uri: this.redirect_uri,
-        grant_type: 'authorization_code'
+        grant_type: 'refresh_token'
       },
       headers: {
         'Authorization': 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
@@ -39,20 +40,25 @@ export default class Spotify {
   addTracksToFeed(feed, token, cb) {
     async.waterfall([
       done => {
-        this.getTrackUrisForFeed(token, feed, done);
+        this.getTrackUrisForFeed(feed, done);
       },
       (feedObj, uris, done) => {
-        this.getPlaylistTracks(token, feedObj, uris, done);
+        this.getPlaylistTracks(feedObj, uris, done);
       },
-      (feed, uris, playlistTracks, done) => {
-        this._addTracksToFeed(token, feed, uris, playlistTracks, done);
+      (uris, playlistTracks, done) => {
+        this._addTracksToFeed(feed, uris, playlistTracks, done);
       }
     ], err => {
-      if (err) console.log(err);
+      if (err) {
+        console.log(err);
+        return cb(err);
+      }
+
+      cb();
     });
   }
 
-  getTrackUrisForFeed(token, f, cb) {
+  getTrackUrisForFeed(f, cb) {
     Feed.findOne({ name: f.name }, (err, found) => {
       if (err) return cb(err);
 
@@ -64,38 +70,81 @@ export default class Spotify {
     });
   }
 
-  getPlaylistTracks(token, feed, uris, cb) {
+  getPlaylistTracks(feed, uris, cb, offset, tracks) {
+    var tracks = tracks || [];
+    var offset = offset || 0;
+
     let auth = {
-      url: `https://api.spotify.com/v1/users/${this.userId}/playlists/${feed.playlistId}/tracks`,
+      url: `https://api.spotify.com/v1/users/${this.userId}/playlists/${feed.playlistId}/tracks?offset=${offset}`,
       headers: {
-        'Authorization': 'Bearer ' + token
-      }
+        'Authorization': 'Bearer ' + this.access_token
+      },
+      resolveWithFullResponse: true
     };
 
-    request.get(auth, (error, response, body) => {
-      cb(null, feed, uris, body.items);
+
+    request.get(auth).then(data =>  {
+      let body = JSON.parse(data.body);
+      if (body.items.length) {
+        tracks = tracks.concat(body.items);
+        offset += 100;
+        this.getPlaylistTracks(feed, uris, cb, offset, tracks);
+      } else {
+        cb(null, uris, tracks);
+      }
     });
   }
 
-  _addTracksToFeed(token, feed, uris, playlistTracks, cb) {
-    let playlistUris = playlistTracks.map(t => { return t.uri });
+  _addTracksToFeed(feed, uris, playlistTracks, cb) {
+    let CHUNK_SIZE = 100;
+    let playlistUris = playlistTracks.map(t => { return t.track.uri });
     let urisToAdd = uris.filter(uri => {
-      return _.indexOf(playlistUris, uri) > -1;
+      return _.indexOf(playlistUris, uri) == -1;
     });
 
-    let deets = {
-      url: `https://api.spotify.com/v1/users/${this.userId}/playlists/${feed.playlistId}/tracks`,
-      json: true,
-      form: {
-        uris: urisToAdd
-      },
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
-    };
+    if (!urisToAdd.length) {
+      console.log('Nothing new to add to ' + feed.name);
+      return cb();
+    }
 
-    request.post(deets, (error, response, body) => {
-      if (error) return cb(error);
+    console.log('Adding ' + urisToAdd.length + ' to '+ feed.name);
+
+
+    var batches = [];
+
+    while (urisToAdd.length) {
+        var batch = urisToAdd.splice(0, CHUNK_SIZE);
+        batches.push(batch);
+    }
+
+    async.eachSeries(batches, (batch, done) => {
+      let queryString = '?uris=';
+
+      batch.forEach(uri => {
+        queryString += uri + ','
+      });
+
+      let deets = {
+        url: `https://api.spotify.com/v1/users/${this.userId}/playlists/${feed.playlistId}/tracks${queryString}`,
+        headers: {
+          'Authorization': 'Bearer ' + this.access_token
+        }
+      };
+
+      request.post(deets, (error, response, body) => {
+        console.log(body);
+        if (error) {
+          console.log(error);
+          return done(error);
+        }
+        done();
+      });
+    }, err => {
+      if (err) {
+        console.log(err);
+        return cb(err);
+      }
+
       cb();
     });
   }
