@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="col-lg-12 jumbotron text-center landing">
-        <h1>Playlister</h1>
-        <p>Auto populate Spotify playlists based on data feeds like Pitchfork's Best New Tracks</p>
-        <a href="/login">
-          <button type="button" id="login-button" class="btn btn-success btn-lg">Login with Spotify</button>
+  {% for feed in feeds %}
+    <div class="row">
+      <div class="col-lg-12 jumbotron text-center landing">
+        <h1>{{ feed.name }}</h1>
+        <p>{{ feed.description }}</p>
+        <a href="{{ feed.spotifyUrl }}" target="_blank">
+          <button type="button" id="login-button" class="btn btn-success btn-lg">View on Spotify</button>
         </a>
+      </div>
     </div>
-</div>
+  {% endfor %}
 {% endblock %}
 
 {% block extra_js %}
-<script>window.REDIRECT_URI = '{{ redirectUri }}';</script>
-<script type="text/javascript" src="js/index.js"></script>
+  <script>window.REDIRECT_URI = '{{ redirectUri }}';</script>
+  <script type="text/javascript" src="js/index.js"></script>
 {% endblock %}

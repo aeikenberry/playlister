@@ -1,28 +1,34 @@
-import spotifyApi from 'spotify-web-api-node';
+import dotenv from 'dotenv';
+import request from 'request-promise';
+
+dotenv.read();
+
 
 export default class Spotify {
 
   constructor() {
-    this.myUserId = '1264695185';
+    this.refresh_token = process.env.REFRESH_TOKEN;
     this.client_id = '8eefcfde253e44b79a9f778daf9513d1';
-    this.client_secret = '5130418757914c2e87ba45846d6c7592';
+    this.client_secret = process.env.CLIENT_SECRET;
     this.redirect_uri = 'http://localhost:8000/app/';
-    this.api = new spotifyApi({
-      clientId: this.client_id,
-      clientSecret: this.client_secret,
-      redirectUri: this.redirect_uri
-    });
-    this.token = null;
   }
 
-  setAuth(cb) {
-    this.api.clientCredentialsGrant()
-      .then((data) => {
-        this.token = data.body.access_token;
-        this.api.setAccessToken(this.token);
-        cb(this.api);
-      }, (err) => {
-        cb(err);
-      });
+  getToken(cb) {
+    var authOptions = {
+      url: 'https://accounts.spotify.com/api/token',
+      form: {
+        code: this.refresh_token,
+        redirect_uri: this.redirect_uri,
+        grant_type: 'authorization_code'
+      },
+      headers: {
+        'Authorization': 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
+      },
+      json: true
+    };
+    request.post(authOptions, (error, response, body) => {
+      cb(body.access_token);
+    });
   }
+
 }

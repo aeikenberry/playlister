@@ -31,3 +31,4 @@ creds
 bower_components
 
 .env
+.idea

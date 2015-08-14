@@ -16,13 +16,14 @@ class PitchforkFeed {
   getFeed(cb) {
     feed(this.url, (err, articles) => {
 
+      let parsedTitles;
       let titles = [];
 
       articles.forEach(article => {
         titles.push(article.title);
       });
 
-      let parsedTitles = titles.map((title) => {
+      parsedTitles = titles.map((title) => {
         let parts = title.split(': ');
 
         if (parts.length === 2) {
@@ -47,13 +48,13 @@ class PitchforkFeed {
       name: this.name,
       description: this.description,
       url: this.url,
-      albumFeed: this.albumFeed
+      albumFeed: this.albumFeed,
+      spotifyUrl: this.spotifyUrl
     };
 
     Feed.findOne(feed, (err, found) => {
 
       if (found) {
-        console.log(this.name, !!found);
         let tracks = _.uniq(found.tracks.concat(tracks), 'id')
                       .filter((track) => {
                         return track != null;
@@ -80,6 +81,7 @@ export class BestNewAlbums extends PitchforkFeed {
     this.url = 'http://pitchfork.com/rss/reviews/best/albums/';
     this.name = 'Pitchfork Best New Albums';
     this.description = 'Pitchfork.com\'s curated Best New Albums';
+    this.spotifyUrl = 'https://open.spotify.com/user/1264695185/playlist/1TcvJsuY3hIGySi07WpLyJ';
     this.albumFeed = true;
   }
 
@@ -101,6 +103,7 @@ export class BestNewTracks extends PitchforkFeed {
     this.url = 'http://pitchfork.com/rss/reviews/best/tracks/';
     this.name = 'Pitchfork Best New Tracks';
     this.description = 'Pitchfork.com\'s curated Best New Tracks';
+    this.spotifyUrl = 'https://open.spotify.com/user/1264695185/playlist/7ns975S9CKr9cQJ4HW4eqT';
   }
 
   getSearchOptions() {

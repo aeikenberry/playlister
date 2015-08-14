@@ -64,13 +64,29 @@ async.waterfall([
               done();
             }
           });
+        },
+
+        // Update the spotify playlists
+        (done) => {
+          async.waterfall([
+            d => {
+              spotify.getToken(t => {
+                d(null, t);
+              });
+            },
+            d => {
+              spotify.getPlaylist(feed)
+            }
+          ]);
+          spotify.getToken(t => { token = t; });
+
         }
       ], (err) => {
         if (err) {
           console.log('Error feeding Feed: ' + feed.name, err);
           eachDone(err);
         }
-        console.log('Finshed with Feed: ' + feed.name);
+        console.log('Finished with Feed: ' + feed.name);
         eachDone();
       });
 

@@ -8,7 +8,8 @@ let feedSchema = new Schema({
   url: String,
   lastFetched: Date,
   tracks: [],
-  albumFeed: Boolean
+  albumFeed: Boolean,
+  spotifyUrl: String
 });
 
 export default mongoose.model('Feed', feedSchema);

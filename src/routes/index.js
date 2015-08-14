@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import querystring from 'querystring';
 import request from 'request';
 
+import Feed from '../models/Feed';
+
 dotenv.load();
 var router = express.Router();
 var client_id = '8eefcfde253e44b79a9f778daf9513d1';
@@ -24,7 +26,17 @@ var stateKey = 'spotify_auth_state';
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-  res.render('index', {redirectUri: redirect_uri});
+
+  Feed.find((err, feeds) => {
+    if (err) {
+      console.log("Error getting feeds.", err);
+    }
+
+    res.render('index', {
+      'redirectUri': redirect_uri,
+      'feeds': feeds
+    });
+  });
 });
 
 /* GET login */

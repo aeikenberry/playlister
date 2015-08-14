@@ -7,7 +7,8 @@
     "dev": "nodemon ./bin/www -e html,js,sass",
     "gulp": "./node_modules/.bin/gulp",
     "postinstall": "./node_modules/bower/bin/bower install && ./node_modules/.bin/gulp build",
-    "feed": "node ./dist/feeder/feeder.js"
+    "feed": "node ./dist/feeder/feeder.js",
+    "tests": "./node_modules/.bin/mocha tests"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -44,5 +45,9 @@
     "querystring": "^0.2.0",
     "react-tap-event-plugin": "^0.1.7",
     "material-ui": "^0.10.2"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.5",
+    "should": "^7.0.3"
   }
 }
