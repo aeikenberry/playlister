@@ -74,12 +74,18 @@ async.waterfall([
                 d(null, t);
               });
             },
-            d => {
-              spotify.getPlaylist(feed)
+            (d, token) => {
+              spotify.addTracksToFeed(feed, token, res => {
+                d(null);
+              });
             }
-          ]);
-          spotify.getToken(t => { token = t; });
-
+          ], err => {
+            if (err) {
+              console.log(err);
+              return done(err);
+              done();
+            }
+          });
         }
       ], (err) => {
         if (err) {
