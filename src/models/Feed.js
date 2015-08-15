@@ -9,6 +9,7 @@ let feedSchema = new Schema({
   lastFetched: Date,
   tracks: [],
   albumFeed: Boolean,
+  spotifyUrl: String,
   playlistId: String
 });
 

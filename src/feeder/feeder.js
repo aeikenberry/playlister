@@ -4,10 +4,15 @@ import request from 'request-promise';
 
 import database from '../config/database';
 import Feed from '../models/Feed';
-import {BestNewAlbums, BestNewTracks} from './pitchfork';
+import {BestNewAlbums, BestNewTracks, AlbumReviews, TrackReviews} from './pitchfork';
 import Spotify from './spotify';
 
-let feeds = [new BestNewAlbums(), new BestNewTracks()];
+let feeds = [
+  new TrackReviews(),
+  new BestNewAlbums(),
+  new BestNewTracks(),
+  new AlbumReviews()
+];
 
 let spotify = new Spotify();
 

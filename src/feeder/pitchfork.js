@@ -127,3 +127,56 @@ export class BestNewTracks extends PitchforkFeed {
     };
   }
 }
+
+export class AlbumReviews extends PitchforkFeed {
+  constructor(options) {
+    super(options);
+    this.url = 'http://pitchfork.com/rss/reviews/albums/';
+    this.name = 'Pitchfork Album Reviews';
+    this.description = 'Pitchfork.com\'s Alubm Reviews';
+    this.playlistId = '5j71qlYVEf2bB3BqTJUCgL';
+    this.spotifyUrl = 'https://open.spotify.com/user/1264695185/playlist/5j71qlYVEf2bB3BqTJUCgL';
+    this.albumFeed = true;
+  }
+
+  getSpotifyLookupString(title) {
+    let artist = encodeURIComponent(title.artist);
+    let album = encodeURIComponent(title.album);
+    return `artist:"${artist}"+album:"${album}"`;
+  }
+
+  _parseParts(parts) {
+    return {
+      artist: parts[0],
+      album: parts[1]
+    };
+  }
+}
+
+export class TrackReviews extends PitchforkFeed {
+  constructor(options) {
+    super(options);
+    this.url = 'http://pitchfork.com/rss/reviews/tracks/';
+    this.spotifyUrl = 'https://open.spotify.com/user/1264695185/playlist/3R8dGDX5s3tdvS4jbda7o6';
+    this.name = 'Pitchfork Track Reviews';
+    this.description = 'Pitchfork.com\'s Track Reviews';
+    this.playlistId = '3R8dGDX5s3tdvS4jbda7o6';
+  }
+
+  getSearchOptions() {
+    return '&limit=1';
+  }
+
+  getSpotifyLookupString(title) {
+    let track = encodeURIComponent(title.track);
+    let artist = encodeURIComponent(title.artist);
+    return `artist:"${artist}"+track:"${track}"`;
+  }
+
+  _parseParts(parts) {
+    return {
+      artist: parts[0],
+      track: parts[1].replace(/"/g, "")
+    };
+  }
+}
