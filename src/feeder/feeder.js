@@ -1,5 +1,6 @@
 import async from 'async';
 import mongoose from 'mongoose';
+import optimist from 'optimist';
 import request from 'request-promise';
 
 import database from '../config/database';
@@ -7,12 +8,18 @@ import Feed from '../models/Feed';
 import {BestNewAlbums, BestNewTracks, AlbumReviews, TrackReviews} from './pitchfork';
 import Spotify from './spotify';
 
-let feeds = [
-  new TrackReviews(),
-  new BestNewAlbums(),
-  new BestNewTracks(),
-  new AlbumReviews()
-];
+let args = optimist.argv._;
+
+let feedHandlers = {
+  bna: BestNewAlbums,
+  bnt: BestNewTracks,
+  ta: TrackReviews,
+  aa: AlbumReviews
+}
+
+let feeds = args.map(f => {
+  return new feedHandlers[f]();
+});
 
 let spotify = new Spotify();
 
