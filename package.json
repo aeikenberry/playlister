@@ -36,12 +36,12 @@
     "request": "^2.60.0",
     "request-promise": "^0.4.3",
     "querystring": "^0.2.0",
-    "optimist": "^0.6.1"
+    "optimist": "^0.6.1",
+    "gulp-nodemon": "^2.0.3",
+    "gulp-ruby-sass": "^1.1.0"
   },
   "devDependencies": {
     "mocha": "^2.2.5",
-    "should": "^7.0.3",
-    "gulp-nodemon": "^2.0.3",
-    "gulp-ruby-sass": "^1.1.0"
+    "should": "^7.0.3"
   }
 }
