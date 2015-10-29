@@ -4,6 +4,7 @@ import optimist from 'optimist';
 import request from 'request-promise';
 
 import database from '../config/database';
+import Config from '../models/Config';
 import Feed from '../models/Feed';
 import {BestNewAlbums, BestNewTracks, AlbumReviews, TrackReviews} from './pitchfork';
 import Spotify from './spotify';
@@ -15,7 +16,7 @@ let feedHandlers = {
   bnt: BestNewTracks,
   ta: TrackReviews,
   aa: AlbumReviews
-}
+};
 
 let feeds = args.map(f => {
   return new feedHandlers[f]();
@@ -30,7 +31,6 @@ async.waterfall([
     console.log('connect');
     mongoose.connect(database.url, callback);
   },
-
   // Populate the feeds
   (callback) => {
 

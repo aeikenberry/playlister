@@ -2,6 +2,7 @@ import _ from 'lodash';
 import async from 'async';
 import dotenv from 'dotenv';
 import request from 'request-promise';
+import Config from '../models/Config.js';
 import Feed from '../models/Feed';
 
 dotenv.load();
@@ -11,29 +12,60 @@ export default class Spotify {
 
   constructor() {
     this.userId = process.env.USER_ID;
-    this.refresh_token = process.env.REFRESH_TOKEN;
     this.client_id = '8eefcfde253e44b79a9f778daf9513d1';
     this.client_secret = process.env.CLIENT_SECRET;
     this.redirect_uri = 'http://localhost:8000/app/';
   }
 
+  getRefreshToken(callback) {
+    Config.find((err, configs) => {
+      if (!configs.length) {
+        Config.create({
+          refresh_token: process.env.REFRESH_TOKEN
+        }, (err, config) => {
+          this.refresh_token = config.refresh_token;
+          callback();
+        });
+      } else {
+        this.refresh_token = configs[0].refresh_token;
+        callback();
+      }
+    });
+  }
+
   getToken(cb) {
-    console.log(this.refresh_token, this.redirect_uri);
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        refresh_token: this.refresh_token,
-        redirect_uri: this.redirect_uri,
-        grant_type: 'refresh_token'
+    async.waterfall([
+      callback => {
+        this.getRefreshToken(callback);
       },
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
-      },
-      json: true
-    };
-    request.post(authOptions, (error, response, body) => {
-      this.access_token = body.access_token;
-      cb(body.access_token);
+      callback => {
+        var authOptions = {
+          url: 'https://accounts.spotify.com/api/token',
+          form: {
+            refresh_token: this.refresh_token,
+            redirect_uri: this.redirect_uri,
+            grant_type: 'refresh_token'
+          },
+          headers: {
+            'Authorization': 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
+          },
+          json: true
+        };
+        request.post(authOptions, (error, response, body) => {
+          this.access_token = body.access_token;
+          if (body.refresh_token) {
+            Config.findOneAndUpdate({ refresh_token: this.refresh_token}, { refresh_token: body.refresh_token}, (err, config) => {
+              console.log('updated saved refresh token');
+              callback(null, body.access_token);
+            })
+          } else {
+            callback(null, body.access_token);
+          }
+        });
+      }
+    ], (err, token) => {
+      console.log(token);
+      cb(token);
     });
   }
 
