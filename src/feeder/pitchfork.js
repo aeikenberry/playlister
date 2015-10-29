@@ -85,7 +85,9 @@ export class BestNewAlbums extends PitchforkFeed {
   }
 
   getSpotifyLookupString(title) {
-    return `artist:"${title.artist}"+album:"${title.album}"`;
+    let artist = encodeURIComponent(title.artist);
+    let album = encodeURIComponent(title.album);
+    return `artist:"${artist}"+album:"${album}"`
   }
 
   getSearchOptions() {
