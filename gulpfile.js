@@ -4,7 +4,7 @@ var concat = require("gulp-concat");
 var gutil = require("gulp-util");
 var babel = require("gulp-babel");
 var nodemon = require("gulp-nodemon");
-var sass = require('gulp-ruby-sass');
+var sass = require('gulp-sass');
 
 /*    Server
  */
