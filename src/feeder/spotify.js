@@ -64,7 +64,6 @@ export default class Spotify {
         });
       }
     ], (err, token) => {
-      console.log(token);
       cb(token);
     });
   }
