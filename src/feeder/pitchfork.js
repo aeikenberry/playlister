@@ -29,7 +29,12 @@ class PitchforkFeed {
         if (parts.length === 2) {
           return this._parseParts(parts);
         } else {
-          console.log('Error parsing title...', title);
+          let part_one = parts[0];
+          var part_two = '';
+          for (var i = 1; i < parts.length - 1; ++i) {
+            part_two = part_two + parts[i];
+          }
+          return [part_one, part_two];
         }
       });
 
