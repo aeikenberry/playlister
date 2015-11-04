@@ -34,7 +34,7 @@ class PitchforkFeed {
           for (var i = 1; i < parts.length; ++i) {
             part_two = i === 1 ? parts[i] : part_two + ': ' + parts[i];
           }
-          return [part_one, part_two];
+          return this._parseParts([part_one, part_two]);
         }
       });
 
