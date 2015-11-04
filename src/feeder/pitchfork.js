@@ -31,8 +31,8 @@ class PitchforkFeed {
         } else {
           let part_one = parts[0];
           var part_two = '';
-          for (var i = 1; i < parts.length - 1; ++i) {
-            part_two = part_two + parts[i];
+          for (var i = 1; i < parts.length; ++i) {
+            part_two = i === 1 ? parts[i] : part_two + ': ' + parts[i];
           }
           return [part_one, part_two];
         }
