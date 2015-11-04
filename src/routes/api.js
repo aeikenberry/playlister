@@ -15,7 +15,7 @@ router.get('/feeds', (req, res, next) => {
       return;
     }
 
-    res.send({'feeds': feeds});
+    res.send({feeds: feeds});
   });
 });
 
@@ -46,7 +46,8 @@ router.patch('/subscriptions', (req, res, next) => {
       }
 
       res.send({ subscriber: found });
-  });
+    }
+  );
 });
 
 router.post('/subscriptions', (req, res, next) => {
@@ -70,20 +71,25 @@ router.post('/subscriptions', (req, res, next) => {
           return;
         }
 
-        res.send({'subscriber': sub});
+        res.send({subscriber: sub});
       });
     } else {
       Subscriber.create({
         refreshToken: refreshToken,
         name: name,
-        subscriptions: [{feedId: feedId, refreshToken: refreshToken}]
+        subscriptions: [
+          {
+            feedId: feedId,
+            refreshToken: refreshToken,
+          },
+        ],
       }, (err, sub) => {
         if (err) {
           res.send(err);
           return;
         }
 
-        res.send({'subscriber': sub});
+        res.send({subscriber: sub});
       });
     }
   });

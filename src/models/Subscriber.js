@@ -4,8 +4,10 @@ let Schema = mongoose.Schema;
 export default mongoose.model('Subscriber', new Schema({
   name: String,
   refreshToken: String,
-  subscriptions: [{
+  subscriptions: [
+    {
       feedId: String,
-      playlistId: String
-  }]
+      playlistId: String,
+    },
+  ],
 }));

@@ -2,6 +2,9 @@ import feed from 'feed-read';
 import _ from 'lodash';
 
 import Feed from '../models/Feed';
+import { url } from '../config/database';
+
+console.log(url);
 
 class PitchforkFeed {
 
@@ -10,7 +13,7 @@ class PitchforkFeed {
   }
 
   _parseDataParts(parts) {
-    throw new Error("Must implement _parseDataParts");
+    throw new Error('Must implement _parseDataParts');
   }
 
   getFeed(cb) {
@@ -29,12 +32,13 @@ class PitchforkFeed {
         if (parts.length === 2) {
           return this._parseParts(parts);
         } else {
-          let part_one = parts[0];
-          var part_two = '';
+          let partOne = parts[0];
+          var partTwo = '';
           for (var i = 1; i < parts.length; ++i) {
-            part_two = i === 1 ? parts[i] : part_two + ': ' + parts[i];
+            partTwo = i === 1 ? parts[i] : partTwo + ': ' + parts[i];
           }
-          return this._parseParts([part_one, part_two]);
+
+          return this._parseParts([partOne, partTwo]);
         }
       });
 
@@ -52,7 +56,7 @@ class PitchforkFeed {
       description: this.description,
       url: this.url,
       albumFeed: this.albumFeed,
-      playlistId: this.playlistId
+      playlistId: this.playlistId,
     };
 
     Feed.findOne(feed, (err, found) => {
@@ -92,7 +96,7 @@ export class BestNewAlbums extends PitchforkFeed {
   getSpotifyLookupString(title) {
     let artist = encodeURIComponent(title.artist);
     let album = encodeURIComponent(title.album);
-    return `artist:"${artist}"+album:"${album}"`
+    return `artist:"${artist}"+album:"${album}"`;
   }
 
   getSearchOptions() {
@@ -102,7 +106,7 @@ export class BestNewAlbums extends PitchforkFeed {
   _parseParts(parts) {
     return {
       artist: parts[0],
-      album: parts[1]
+      album: parts[1],
     };
   }
 }
@@ -130,7 +134,7 @@ export class BestNewTracks extends PitchforkFeed {
   _parseParts(parts) {
     return {
       artist: parts[0],
-      track: parts[1].replace(/"/g, "")
+      track: parts[1].replace(/"/g, ''),
     };
   }
 }
@@ -155,7 +159,7 @@ export class AlbumReviews extends PitchforkFeed {
   _parseParts(parts) {
     return {
       artist: parts[0],
-      album: parts[1]
+      album: parts[1],
     };
   }
 }
@@ -183,7 +187,7 @@ export class TrackReviews extends PitchforkFeed {
   _parseParts(parts) {
     return {
       artist: parts[0],
-      track: parts[1].replace(/"/g, "")
+      track: parts[1].replace(/"/g, ''),
     };
   }
 }

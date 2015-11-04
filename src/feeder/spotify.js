@@ -7,13 +7,12 @@ import Feed from '../models/Feed';
 
 dotenv.load();
 
-
 export default class Spotify {
 
   constructor() {
     this.userId = process.env.USER_ID;
-    this.client_id = '8eefcfde253e44b79a9f778daf9513d1';
-    this.client_secret = process.env.CLIENT_SECRET;
+    this.clientID = '8eefcfde253e44b79a9f778daf9513d1';
+    this.clientSecret = process.env.CLIENT_SECRET;
     this.redirect_uri = 'http://localhost:8000/app/';
   }
 
@@ -38,6 +37,7 @@ export default class Spotify {
       callback => {
         this.getRefreshToken(callback);
       },
+
       callback => {
         var authOptions = {
           url: 'https://accounts.spotify.com/api/token',
@@ -47,7 +47,7 @@ export default class Spotify {
             grant_type: 'refresh_token'
           },
           headers: {
-            'Authorization': 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
+            'Authorization': 'Basic ' + (new Buffer(this.clientID + ':' + this.clientSecret).toString('base64'))
           },
           json: true
         };

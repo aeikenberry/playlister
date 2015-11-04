@@ -15,7 +15,7 @@ let feedHandlers = {
   bna: BestNewAlbums,
   bnt: BestNewTracks,
   ta: TrackReviews,
-  aa: AlbumReviews
+  aa: AlbumReviews,
 };
 
 let feeds = args.map(f => {
@@ -31,6 +31,7 @@ async.waterfall([
     console.log('connect');
     mongoose.connect(database.url, callback);
   },
+
   // Populate the feeds
   (callback) => {
 
@@ -48,21 +49,23 @@ async.waterfall([
 
         (titles, done) => {
           console.log('Looking up Tracks');
+
           // Lookup Spotify tracks
           async.eachSeries(titles, (title, cb) => {
             request({
               uri: `https://api.spotify.com/v1/search?query=${feed.getSpotifyLookupString(title)}&market=US&type=track${feed.getSearchOptions()}`,
-              resolveWithFullResponse: true}).then((data) => {
-                let body = JSON.parse(data.body);
-                if (body.tracks.items.length) {
-                  feed.addTracks(body.tracks.items, cb);
-                } else {
-                  cb();
-                }
-              }, (err) => {
-                console.log(err);
-                err ? cb(err) : cb();
-              });
+              resolveWithFullResponse: true,
+            }).then((data) => {
+              let body = JSON.parse(data.body);
+              if (body.tracks.items.length) {
+                feed.addTracks(body.tracks.items, cb);
+              } else {
+                cb();
+              }
+            }, (err) => {
+              console.log(err);
+              err ? cb(err) : cb();
+            });
           }, (err) => {
             if (err) {
               done(err);
@@ -81,9 +84,10 @@ async.waterfall([
                 d(null, t);
               });
             },
+
             (token, d) => {
               spotify.addTracksToFeed(feed, token, d);
-            }
+            },
           ], err => {
             if (err) {
               console.log(err);
@@ -92,12 +96,13 @@ async.waterfall([
 
             done();
           });
-        }
+        },
       ], (err) => {
         if (err) {
           console.log('Error feeding Feed: ' + feed.name, err);
           eachDone(err);
         }
+
         console.log('Finished with Feed: ' + feed.name);
         eachDone();
       });
@@ -105,9 +110,8 @@ async.waterfall([
     }, (err) => {
       if (err) console.log(err);
       callback();
-    })
-  }
-
+    });
+  },
 ], (err) => {
   if (err) console.log(err);
   mongoose.disconnect();
